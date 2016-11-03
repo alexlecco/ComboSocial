@@ -1,0 +1,49 @@
+{
+  bares: {
+    bar001: {
+      id: "bar001",
+      nombre: "El arbol de Galeano",
+      activo: true,
+    },
+    bar002: {
+      id: "bar002",
+      nombre: "Plaza de almas",
+      activo: true,
+    },
+  },
+
+  usuarios: {
+    usu001: {
+      id: "usu001",
+      nombre: "Alex Villecco",
+      telefono: "3815343458",
+      domicilio: "Rivadavia 105",
+      tipo: "cliente",
+      conectado: false,
+    },
+    usu002: {
+      id: "usu002",
+      nombre: "Ale Suarez",
+      telefono: "3815653222",
+      domicilio: "Chacabuco 77",
+      tipo: "empleado",
+      conectado: false,
+    },
+    usu003: {
+      id: "usu003",
+      nombre: "Mario Celis",
+      telefono: "3815216946",
+      domicilio: "La rioja 445",
+      tipo: "empleado",
+      conectado: false,
+    },
+    usu004: {
+      id: "usu004",
+      nombre: "Eduardo Martinez",
+      telefono: "3816097056",
+      domicilio: "Jujuy 66",
+      tipo: "propietario",
+      conectado: false,
+    },
+  },
+}
