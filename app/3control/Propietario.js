@@ -7,16 +7,16 @@ import { Container, Header, Title, Content, Grid, Col, Row, List, ListItem, Card
 
 import { Pagina, Contenido, Cargando } from './../componentes/pagina';
 
-import { Usuario, Pedido, Plato, Estados } from './../datos'
+import { Usuario, Pedido, Combo, Estados } from './../datos'
 import { Estilos, Estilo, Pantalla } from './../styles';
 
-class Cadete extends Component {
+class Propietario extends Component {
     constructor(props){
       super(props)
 
       this.state = { usuario: false, platos: false, pedidos: false }
       Usuario.registrar(this)
-      Plato.registrar(this)
+      Combo.registrar(this)
       Pedido.registrar(this)
     }
 
@@ -25,7 +25,7 @@ class Cadete extends Component {
       Usuario.observar(cadete)
       Usuario.observar(usuario => usuario.esCliente || usuario.esCocinero )
 
-      Plato.observar( plato => plato.activo )
+      Combo.observar( plato => plato.activo )
       Pedido.observar( pedido => pedido.enEntrega(cadete) )
     }
 
@@ -34,7 +34,7 @@ class Cadete extends Component {
       Usuario.detener(cadete)
       Usuario.detener()
 
-      Plato.detener()
+      Combo.detener()
       Pedido.detener()
     }
 
@@ -59,15 +59,15 @@ class Cadete extends Component {
       if(!pedido){ return <Libre {...this.props} />}
 
       const plato    = platos.find(plato => plato.id === pedido.plato)
-      const cocinero = usuarios.find(usuario => usuario.id === pedido.cocinero)
+      const empleado = usuarios.find(usuario => usuario.id === pedido.empleado)
       const cliente  = usuarios.find(usuario => usuario.id === pedido.cliente)
 
-      return <Envio {...this.props} pedido={pedido} plato={plato} cocinero={cocinero} cliente={cliente} alElegir={ this.alElegir } />
+      return <Envio {...this.props} pedido={pedido} plato={plato} empleado={empleado} cliente={cliente} alElegir={ this.alElegir } />
     }
   }
 
   const Envio = (props) => {
-    const { pedido, plato, cliente, cocinero, alElegir, alSalir } = props
+    const { pedido, plato, cliente, empleado, alElegir, alSalir } = props
     const accion = pedido.estado === Estados.disponible ? 'Retirar ya!' : 'Entregar ya!'
 
     return (
@@ -93,14 +93,14 @@ class Cadete extends Component {
       <Text style={[Estilo.plato.precio, Estilo.plato.ubicarPrecio]}>${precio}</Text>
     </View>
 
-  const Cocinero = ({pedido, cocinero}) =>
+  const Cocinero = ({pedido, empleado}) =>
     <Grid>
-      <Col><Thumbnail source={{uri: cocinero.foto}} size={100} /></Col>
+      <Col><Thumbnail source={{uri: empleado.foto}} size={100} /></Col>
       <Col>
         <Text style={Estilo.pedido.descripcion}> Cocinero: </Text>
-        <Text style={Estilo.pedido.cantidad}>{cocinero.nombre}</Text>
+        <Text style={Estilo.pedido.cantidad}>{empleado.nombre}</Text>
         <Text style={Estilo.pedido.descripcion}> Dirección: </Text>
-        <Text style={Estilo.pedido.cantidad}>{cocinero.domicilio}</Text>
+        <Text style={Estilo.pedido.cantidad}>{empleado.domicilio}</Text>
       </Col>
     </Grid>
 
@@ -122,4 +122,4 @@ class Cadete extends Component {
       <Text style={{fontSize: 20, alignSelf: 'center'}}>No hay pedidos</Text>
     </Pagina>
 
-export { Cadete };
+export { Propietario };

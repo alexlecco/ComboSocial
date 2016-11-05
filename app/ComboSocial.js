@@ -18,9 +18,9 @@ import { Pagina, Contenido, Cargando } from './componentes/pagina';
 import { Estilos, Estilo, Pantalla } from './styles';
 import { Usuario, Datos } from './datos';
 
-import { Cliente }  from './venta/Cliente';
-import { Cocinero } from './cocina/Cocinero';
-import { Cadete }   from './entrega/Cadete';
+import { Cliente }     from './1donacion/Cliente';
+import { Empleado }    from './2validacion/Empleado';
+import { Propietario } from './3control/Propietario';
 
 import { Examples } from '@shoutem/ui';
 
@@ -87,8 +87,8 @@ export default class ComboSocial extends Component {
     if(!usuario) { return <ElegirUsuario usuarios={usuarios} alElegir={ usuario => this.alIngresar(usuario)} />}
 
     if(usuario.esCliente ) { return <Cliente  id={usuario.id} alSalir={ () => this.alSalir() }/> }
-    if(usuario.esCocinero) { return <Cocinero id={usuario.id} alSalir={ () => this.alSalir() }/> }
-    if(usuario.esCadete)   { return <Cadete   id={usuario.id} alSalir={ () => this.alSalir() }/> }
+    if(usuario.esEmpleado) { return <Empleado id={usuario.id} alSalir={ () => this.alSalir() }/> }
+    if(usuario.esPropietario)   { return <Propietario   id={usuario.id} alSalir={ () => this.alSalir() }/> }
   }
 }
 

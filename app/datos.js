@@ -221,8 +221,8 @@ export class Pedido extends Registro {
       return this.cliente === cliente && !(this.estado == Estados.recibido || this.estado == Estados.cancelado)
     }
 
-    enCocina(cocinero){
-      return this.estado === Estados.pedido || this.cocinero === cocinero && (this.estado === Estados.aceptado || this.estado === Estados.disponible || this.estado === Estados.entregado)
+    enCocina(empleado){
+      return this.estado === Estados.pedido || this.empleado === empleado && (this.estado === Estados.aceptado || this.estado === Estados.disponible || this.estado === Estados.entregado)
     }
 
     enEntrega(cadete){
@@ -284,8 +284,8 @@ export class Pedido extends Registro {
       this.escribir()
     }
 
-    aceptar(cocinero){
-      this.cocinero = cocinero
+    aceptar(empleado){
+      this.empleado = empleado
       this.cambiarEstado(Estados.aceptado)
     }
 
