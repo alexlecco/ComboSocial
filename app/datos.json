@@ -1,101 +1,32 @@
 {
-  platos: {
-    pla001: {
-      id: "pla001",
-      descripcion: "Arrollado de Carne",
-      precio: 60.00,
+  combos: {
+    com001: {
+      id: "com001",
+      descripcion: "2 Hamburguesas + gaseosa",
+      precio: 140,
+      contribución: 4,
       activo: true,
     },
-    pla002: {
-      id: "pla002",
-      descripcion: "Raviolon Amarillo",
-      precio: 70.00,
+    com002: {
+      id: "com002",
+      descripcion: "2 Milanesas + gaseosa",
+      precio: 150,
+      contribución: 5,
       activo: true,
     },
-    pla003: {
-      id: "pla003",
-      descripcion: "Pollo con Arroz",
-      precio: 80.00,
+    com003: {
+      id: "com003",
+      descripcion: "Pizza + gaseosa",
+      precio: 120,
+      contribución: 3,
       activo: true,
     },
-    pla004: {
-      id: "pla004",
-      descripcion: "Lomo a la pimienta",
-      precio: 65.00,
-      activo: false,
-    },
-    pla005: {
-      id: "pla005",
-      descripcion: "Cordero con Ananá",
-      precio: 75.00,
-      activo: false,
-    },
-    pla006: {
-      id: "pla006",
-      descripcion: "Pizza Especial",
-      precio: 85.00,
-      activo: false,
-    },
-    pla007: {
-      id: "pla007",
-      descripcion: "Milanesa con Frita",
-      precio: 50.00,
-      activo: false,
-    },
-    pla008: {
-      id: "pla008",
-      descripcion: "Sorrentinos Rojos",
-      precio: 55.00,
-      activo: false,
-    },
-    pla009: {
-      id: "pla009",
-      descripcion: "Berenjernas Napolitanas",
-      precio: 45.00,
-      activo: false,
-    },
-    pla010: {
-      id: "pla010",
-      descripcion: "Hamburguesas Gigantes",
-      precio: 80.00,
-      activo: false,
-    },
-    pla011: {
-      id: "pla011",
-      descripcion: "Rabas",
-      precio: 85.00,
-      activo: false,
-    },
-    pla012: {
-      id: "pla012",
-      descripcion: "Sorrentinos Verdes",
-      precio: 90.00,
-      activo: false,
-    },
-    pla013: {
-      id: "pla013",
-      descripcion: "Almondigas Verdes",
-      precio: 82.00,
-      activo: false,
-    },
-    pla014: {
-      id: "pla014",
-      descripcion: "Puchero Punsudo",
-      precio: 84.00,
-      activo: false,
-    },
-
-    pla015: {
-      id: "pla015",
-      descripcion: "Lomo furioso",
-      precio: 86.00,
-      activo: false,
-    },
-    pla016: {
-      id: "pla016",
-      descripcion: "Lomo Tranquilo",
-      precio: 86.00,
-      activo: false,
+    com004: {
+      id: "com004",
+      descripcion: "4 milanesas + 2 gaseosas",
+      precio: 300,
+      contribución: 10,
+      activo: true,
     },
   },
 

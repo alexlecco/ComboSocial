@@ -13,9 +13,9 @@ import {
 import StarRating from 'react-native-star-rating';
 import { Pagina, Contenido } from './../componentes/pagina';
 
-import { Usuario, Pedido, Plato, Estados } from './../datos'
+import { Usuario, Pedido, Combo, Estados } from './../datos'
 import { Estilos, Estilo, Pantalla } from './../styles';
-import { MostrarPlato } from './Plato';
+import { MostrarCombo } from './Combo';
 
 const humanizeHora = (segundos) => {
   segundos = Math.floor(segundos)
@@ -64,12 +64,12 @@ const Estado = ({pedido}) => {
         return <Mostrar texto={"Pedido realizado hace"} demora={pedido.tiempoPedido} faltante={pedido.tiempoFaltante} />
 
     case Estados.aceptado:
-        return <Mostrar texto={"Plato en la cocina"} demora={pedido.tiempoCoccion} faltante={pedido.tiempoFaltante} />
+        return <Mostrar texto={"Combo en la cocina"} demora={pedido.tiempoCoccion} faltante={pedido.tiempoFaltante} />
 
     case Estados.entregado:
         return (
             <View>
-              <Mostrar texto="Plato entregado hace " demora={pedido.tiempoValoracion} faltante={pedido.tiempoFaltante} completo={true}/>
+              <Mostrar texto="Combo entregado hace " demora={pedido.tiempoValoracion} faltante={pedido.tiempoFaltante} completo={true}/>
               <View style={{position:'absolute', bottom: 100, left:20, right: 20}}>
                 <StarRating rating={pedido.valoracion} selectedStar={ valoracion => pedido.ponerValoracion(valoracion)} />
               </View>
@@ -77,7 +77,7 @@ const Estado = ({pedido}) => {
         )
 
     case Estados.recibido:
-        return <Mostrar texto={"Plato entregado"} demora={pedido.tiempoPedido} faltante={pedido.tiempoFaltante} />
+        return <Mostrar texto={"Combo entregado"} demora={pedido.tiempoPedido} faltante={pedido.tiempoFaltante} />
 
     default:
         return (
@@ -93,12 +93,12 @@ const Estado = ({pedido}) => {
 
 class PaginaSeguimiento extends Component {
   render(){
-    const { pedido, plato, alSalir, usuario } = this.props
+    const { pedido, combo, alSalir, usuario } = this.props
     const { cadete, estado, cliente } = pedido
     return (
       <Pagina titulo="Seguimiento.3" alSalir={() => alSalir() }>
         <Contenido>
-          <MostrarPlato plato={plato} compacto={esCompacto(Platform)} />
+          <MostrarCombo combo={combo} compacto={esCompacto(Platform)} />
           <Estado {...this.props} />
           <Accion {...this.props} />
         </Contenido>

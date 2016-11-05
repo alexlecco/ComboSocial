@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 
 import { Paginas, Pagina, Contenido } from './../componentes/pagina';
 
-import { Usuario, Pedido, Plato, Estados } from './../datos'
+import { Usuario, Pedido, Combo, Estados } from './../datos'
 import { Estilos, Estilo, Pantalla } from './../styles';
 
 import { Screen, View, Card, Image, Subtitle, Caption, Icon, Button, Text, ListView} from '@shoutem/ui';
@@ -25,19 +25,19 @@ const humanizeHora = (segundos) => {
 
 class Pedir extends Component {
   render(){
-    const { platos, alElegir, alSalir, usuario, presentacion } = this.props
+    const { combos, alElegir, alSalir, usuario, presentacion } = this.props
     return (
       <View styleName="full-screen">
         <Caption>Holis</Caption>
         <Text>Esta es una pantalla </Text>
-        <ListView data={platos}
-          renderRow={(plato)=><Text>{plato.id}</Text>}
+        <ListView data={combos}
+          renderRow={(combo)=><Text>{combo.id}</Text>}
         />
       </View>
       // <Pagina titulo={"Realizar Pedidos"} alSalir={() => alSalir() }>
-      //   <IndicatorViewPager style={Pantalla.pagina} indicator={ this.generarPuntos(platos.length + presentacion ? 1 : 0) }>
+      //   <IndicatorViewPager style={Pantalla.pagina} indicator={ this.generarPuntos(combos.length + presentacion ? 1 : 0) }>
       //     {!!presentacion &&<View><PaginaPresentacion /></View>}
-      //     {platos.map( (plato, indice) => <View key={indice}><PaginaProducto plato={plato} alElegir={ () => alElegir(plato) }/></View> )}
+      //     {combos.map( (combo, indice) => <View key={indice}><PaginaProducto combo={combo} alElegir={ () => alElegir(combo) }/></View> )}
       //   </IndicatorViewPager>
       // </Pagina>
     )
@@ -54,10 +54,10 @@ class PaginaPresentacion extends Component {
       <Contenido>
         <View style={{height: 140, backgroundColor: 'powderblue'}} />
         <View style={{flex: 1, backgroundColor: 'skyblue', alignItems: 'center'}}>
-          <Text style={{fontSize:30, marginTop:20, height:100,color:'red'}}>El plato del dia</Text>
+          <Text style={{fontSize:30, marginTop:20, height:100,color:'red'}}>El combo del dia</Text>
         </View>
         <View style={{height: 50, backgroundColor: 'steelblue', alignItems:'center'}}>
-          <Text style={{fontSize: 20}}>Tu plato en 30 minutos o gratis</Text>
+          <Text style={{fontSize: 20}}>Tu combo en 30 minutos o gratis</Text>
          </View>
       </Contenido>
     )
@@ -66,15 +66,15 @@ class PaginaPresentacion extends Component {
 
 class PaginaProducto extends Component {
   render(){
-    const {plato, alElegir} = this.props
+    const {combo, alElegir} = this.props
     return (
       <Contenido>
-        <Image source={{uri: plato.foto}} style={Pantalla.imagen(4/3)} >
-          <Precio Precio={plato.Precio} />
+        <Image source={{uri: combo.foto}} style={Pantalla.imagen(4/3)} >
+          <Precio Precio={combo.Precio} />
         </Image>
         <View style={{marginTop: Pantalla.separacion}}>
-            <Text style={Estilo.plato.descripcion}> {plato.descripcion} </Text>
-            <Text style={Estilo.plato.detalle}> {plato.detalle} </Text>
+            <Text style={Estilo.combo.descripcion}> {combo.descripcion} </Text>
+            <Text style={Estilo.combo.detalle}> {combo.detalle} </Text>
         </View>
         <Button onPress={() => alElegir()} style={Pantalla.accion}> ¡Pedir Ya! </Button>
       </Contenido>
@@ -83,8 +83,8 @@ class PaginaProducto extends Component {
 }
 
 const Precio = ({precio}) =>
-  <View style={Estilo.plato.ubicarPrecio}>
-    <Text style={Estilo.plato.precio}>u$s{precio}</Text>
+  <View style={Estilo.combo.ubicarPrecio}>
+    <Text style={Estilo.combo.precio}>u$s{precio}</Text>
   </View>
 
 

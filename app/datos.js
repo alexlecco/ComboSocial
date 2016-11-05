@@ -39,9 +39,9 @@ const esColeccion = camino => normalizar(camino).length == 1
 
 export class Datos {
 
-    static cargarPlatos(){
+    static cargarCombos(){
       const datos = require('./datos.json')
-      raiz.child('platos').set(datos.platos)
+      raiz.child('combos').set(datos.combos)
     }
 
     static cargarUsuarios(){
@@ -50,7 +50,7 @@ export class Datos {
     }
 
     static cargar(){
-      this.cargarPlatos()
+      this.cargarCombos()
       this.cargarUsuarios()
     }
 
@@ -162,9 +162,9 @@ export class Usuario extends Registro {
   get esPropietario() {return this.tipo === 'propietario' }
 }
 
-export class Plato extends Registro {
-  get foto(){return `https://dl.dropboxusercontent.com/u/1086383/platos/${this.id}.jpg`}
-  get detalle(){ return `Esta es una descripcion larga de ${this.descripcion}, solo para mostrar en el demo.`}
+export class Combo extends Registro {
+  get foto(){return `https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/combos%2F${this.id}.jpg?alt=media`}
+  get detalle(){ return `Comprando ${this.descripcion}, estás donando $${this.contribución} al comedor Don Bosco`}
 }
 
 export class Pedido extends Registro {
@@ -233,15 +233,15 @@ export class Pedido extends Registro {
       return [Estados.aceptado, Estados.disponible, Estados.retirado].includes(this.estado)
     }
 
-    get plato(){
-      return this.platos[0].id
+    get combo(){
+      return this.combos[0].id
     }
 
     // ACCIONES
-    static pedir(cliente, plato){
-      // const pedido = new Pedido({cliente: cliente.id, {platos: {plato: {id: plato.id, cantidad: 1}}})
+    static pedir(cliente, combo){
+      // const pedido = new Pedido({cliente: cliente.id, {combos: {combo: {id: combo.id, cantidad: 1}}})
       const pedido = new Pedido({cliente: cliente.id})
-      pedido.agregar(plato.id)
+      pedido.agregar(combo.id)
       pedido.cambiarEstado(Estados.pendiente)
     }
 
@@ -263,24 +263,24 @@ export class Pedido extends Registro {
       this.escribir()
     }
 
-    agregar(plato){
-      this.platos = this.platos || []
-      let actual = this.platos.find( p => p.id == plato)
+    agregar(combo){
+      this.combos = this.combos || []
+      let actual = this.combos.find( p => p.id == combo)
       if(actual){
         actual.cantidad += 1
       } else {
-        this.platos.push({ id: plato, cantidad: 1, valoracion: 0 })
+        this.combos.push({ id: combo, cantidad: 1, valoracion: 0 })
       }
       this.escribir()
     }
 
-    quitar(plato){
-      this.platos = this.platos || []
-      let actual = this.platos.find( p => p.id == platos)
+    quitar(combo){
+      this.combos = this.combos || []
+      let actual = this.combos.find( p => p.id == combos)
       if(actual){
         actual.cantidad -= 1
       }
-      this.platos = this.platos.filter( p => p.cantidad > 0)
+      this.combos = this.combos.filter( p => p.cantidad > 0)
       this.escribir()
     }
 
@@ -311,12 +311,12 @@ export class Pedido extends Registro {
     }
 
     get valoracion(){
-      return this.platos[0].valoracion || 0
+      return this.combos[0].valoracion || 0
     }
 
     ponerValoracion(valor){
       if(valor >= 0 || valor <= 5){
-        this.platos[0].valoracion = valor
+        this.combos[0].valoracion = valor
       }
     }
 

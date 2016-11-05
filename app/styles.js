@@ -42,7 +42,7 @@ const Estilos = StyleSheet.create({
 
 });
 
-const Plato = StyleSheet.create({
+const Combo = StyleSheet.create({
   ubicarPrecio: {
     position: 'absolute',
     right:  Pantalla.separacion,
@@ -138,5 +138,5 @@ const Usuario = StyleSheet.create({
   },
 });
 
-const Estilo = {plato: Plato, pedido: Pedido, usuario: Usuario};
+const Estilo = {combo: Combo, pedido: Pedido, usuario: Usuario};
 export {Estilos, Estilo, Pantalla, Item};

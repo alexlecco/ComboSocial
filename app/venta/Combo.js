@@ -10,7 +10,7 @@ import { IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator } from 'rn-v
 
 import { Paginas, Pagina, Contenido } from './../componentes/pagina';
 
-// import { Usuario, Pedido, Plato, Estados } from './../datos'
+// import { Usuario, Pedido, Combo, Estados } from './../datos'
 import { Estilos, Estilo, Pantalla } from './../styles';
 
 const humanizeHora = (segundos) => {
@@ -21,34 +21,34 @@ const humanizeHora = (segundos) => {
   return `${h > 0 ? h + 'h ' : ''}${m > 0 ? m + 'm ' : ''}${s > 0 ? s + 's' : ''}`
 }
 
-class PlatoCompacto extends Component {
+class ComboCompacto extends Component {
   render(){
-    const {plato} = this.props;
+    const {combo} = this.props;
     return (
       <View style={{flexDirection:'row'}}>
-        <Image source={{uri: plato.foto}} style={[Pantalla.imagen(4/3, 0.4), {borderRadius: 5,}]}>
-          <Precio precio={plato.precio} compacto={true} />
+        <Image source={{uri: combo.foto}} style={[Pantalla.imagen(4/3, 0.4), {borderRadius: 5,}]}>
+          <Precio precio={combo.precio} compacto={true} />
         </Image>
         <View style={{marginLeft: Pantalla.separacion, flex: 1}}>
-          <Text style={Estilo.plato.descripcion}> {plato.descripcion} </Text>
-          <Text style={Estilo.plato.detalle}> {plato.detalle} </Text>
+          <Text style={Estilo.combo.descripcion}> {combo.descripcion} </Text>
+          <Text style={Estilo.combo.detalle}> {combo.detalle} </Text>
         </View>
       </View>
     )
   }
 }
 
-class PlatoNormal extends Component {
+class ComboNormal extends Component {
   render(){
-    const { plato } = this.props;
+    const { combo } = this.props;
     return (
       <View>
-        <Image source={{uri: plato.foto}} style={[Pantalla.imagen(4/3), {borderRadius: 5, }]}>
-          <Precio precio={plato.precio} />
+        <Image source={{uri: combo.foto}} style={[Pantalla.imagen(4/3), {borderRadius: 5, }]}>
+          <Precio precio={combo.precio} />
         </Image>
         <View style={{marginTop: Pantalla.separacion}}>
-          <Text style={Estilo.plato.descripcion}> {plato.descripcion} </Text>
-          <Text style={Estilo.plato.detalle}> {plato.detalle} </Text>
+          <Text style={Estilo.combo.descripcion}> {combo.descripcion} </Text>
+          <Text style={Estilo.combo.detalle}> {combo.detalle} </Text>
         </View>
       </View>
     )
@@ -56,10 +56,10 @@ class PlatoNormal extends Component {
 }
 
 const Precio = ({ precio, compacto }) =>
-  <View style={Estilo.plato.ubicarPrecio}>
-    <Text style={compacto ? Estilo.plato.precioCompacto : Estilo.plato.precio}>${precio}</Text>
+  <View style={Estilo.combo.ubicarPrecio}>
+    <Text style={compacto ? Estilo.combo.precioCompacto : Estilo.combo.precio}>${precio}</Text>
   </View>
 
-const MostrarPlato = ({plato, compacto}) => compacto ? <PlatoCompacto plato={plato} /> : <PlatoNormal plato={plato} />
+const MostrarCombo = ({combo, compacto}) => compacto ? <ComboCompacto combo={combo} /> : <ComboNormal combo={combo} />
 
-export { PlatoCompacto, PlatoNormal, MostrarPlato }
+export { ComboCompacto, ComboNormal, MostrarCombo }

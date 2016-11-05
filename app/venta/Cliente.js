@@ -6,7 +6,7 @@ import { Image } from 'react-native';
 import { Container, Header, Title, Content, Footer, Button, Text, View, Spinner, Icon, } from 'native-base';
 
 import { Pagina, Contenido, Cargando } from './../componentes/pagina';
-import { Usuario, Pedido, Plato, Estados } from './../datos'
+import { Usuario, Pedido, Combo, Estados } from './../datos'
 import { Estilos, Estilo, Pantalla } from './../styles';
 
 import { PaginaConfirmar } from './pagina_confirmar';
@@ -25,13 +25,12 @@ const humanizeHora = (segundos) => {
 class Cliente extends Component {
   constructor(props){
     super(props)
-    this.state = { usuario: false, platos: false, pedidos: false}
-    console.log("CONSTRUCTOR EN CLIENTE")
+    this.state = { usuario: false, combos: false, pedidos: false}
 
     // BINDING
     Usuario.registrar(this)
     Pedido.registrar(this)
-    Plato.registrar(this)
+    Combo.registrar(this)
     this.timer = null
   }
 
@@ -63,51 +62,51 @@ class Cliente extends Component {
 
     Usuario.observar(cliente)
     Pedido.observar(pedido => pedido.enPedido(cliente))
-    Plato.observar(plato => plato.activo)
+    Combo.observar(combo => combo.activo)
     this.activarReloj()
   }
 
   componentWillUnmount(){
     const { usuario } = this.state
     usuario && usuario.detener()
-    Plato.detener()
+    Combo.detener()
     Pedido.detener()
     this.detenerReloj()
   }
 
   render(){
-    const {usuario, platos, pedidos}  = this.state
+    const {usuario, combos, pedidos}  = this.state
 
-    const hayDatos   = usuario && platos && pedidos
-    const hayPlatos  = platos  && platos.length  > 0
-    const hayPedidos = platos  && pedidos && pedidos.length > 0
+    const hayDatos   = usuario && combos && pedidos
+    const hayCombos  = combos  && combos.length  > 0
+    const hayPedidos = combos  && pedidos && pedidos.length > 0
 
     if(hayPedidos){
       var pedido = pedidos[0]
-      var plato  = platos.find(plato => plato.id === pedido.plato)
+      var combo  = combos.find(combo => combo.id === pedido.combo)
 
-      // return <Pedir platos={platos} />
+      // return <Pedir combos={combos} />
       if(pedido.estado === Estados.pendiente ){
         return <PaginaConfirmar {...this.props}
                   usuario={usuario}
                   pedido={pedido}
-                  plato={plato}
+                  combo={combo}
                   alConfirmar ={ () => pedido.confirmar() }
                   alCancelar ={ () => pedido.cancelar() } />
       } else {
         return <PaginaSeguimiento {...this.props}
                   usuario={usuario}
                   pedido={pedido}
-                  plato={plato} />
+                  combo={combo} />
       }
     }
 
-    if(hayPlatos){
+    if(hayCombos){
 
       return <PaginaPedido {...this.props}
                   usuario={usuario}
-                  platos={platos}
-                  alElegir={ plato => Pedido.pedir(usuario, plato) } />
+                  combos={combos}
+                  alElegir={ combo => Pedido.pedir(usuario, combo) } />
     }
 
     return <Cargando />

@@ -4,7 +4,12 @@ import React, { Component } from 'react';
 
 import { AsyncStorage } from 'react-native';
 
-import { Container, Header, Title, Subtitle, Content, Footer, List, ListItem, Thumbnail, Button, Text, View } from 'native-base';
+import {
+  Container, Header, Title,
+  Subtitle, Content, Footer,
+  List, ListItem, Thumbnail,
+  Button, Text, View,
+} from 'native-base';
 
 // var DigitsAuthenticateButton = require('./DigitsAuthenticateButton');
 
@@ -88,7 +93,7 @@ export default class ComboSocial extends Component {
 }
 
 const ejecutarAccion = (accion) => {
-  if(accion==0){ Datos.cargarPlatos() }
+  if(accion==0){ Datos.cargarCombos() }
   if(accion==1){
     Datos.cargarUsuarios();
     console.log("PROBANDO getItem");
@@ -109,15 +114,15 @@ const ElegirUsuario = (props) => {
   return (
     <Container>
       <Header>
-        <Title> El Plato del Día - Administración </Title>
+        <Title> Combo Social - Panel de control </Title>
       </Header>
       <Content>
-        <ListarUsuarios titulo="Clientes"  {...props} usuarios={clientes} />
-        <ListarUsuarios titulo="Empleados" {...props} usuarios={empleados} />
-        <ListarUsuarios titulo="Propietarios"   {...props} usuarios={propietarios} />
+        <ListarUsuarios titulo="Clientes"     {...props} usuarios={clientes} />
+        <ListarUsuarios titulo="Empleados"    {...props} usuarios={empleados} />
+        <ListarUsuarios titulo="Propietarios" {...props} usuarios={propietarios} />
       </Content>
       <Footer>
-        <Acciones titulos={["+ Platos", "+ Usuarios", "- Pedidos"]} alElegir={(nroAccion) => ejecutarAccion(nroAccion)} />
+        <Acciones titulos={["+ Combos", "+ Usuarios", "- Pedidos"]} alElegir={(nroAccion) => ejecutarAccion(nroAccion)} />
       </Footer>
     </Container>
   )
