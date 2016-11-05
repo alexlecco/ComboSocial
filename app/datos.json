@@ -1,14 +1,22 @@
 {
-  bares: {
-    bar001: {
-      id: "bar001",
-      nombre: "El arbol de Galeano",
-      activo: true,
+  combos: {
+    com001: {
+      id: "com001",
+      nombre: "pizza con gaseosa",
+      precio: 150,
+      donacion: 5,
     },
-    bar002: {
-      id: "bar002",
-      nombre: "Plaza de almas",
-      activo: true,
+    com002: {
+      id: "com002",
+      nombre: "2 hamburguesas con papas",
+      precio: 130,
+      donacion: 3,
+    },
+    com003: {
+      id: "com003",
+      nombre: "2 milanesas con gaseosa",
+      precio: 135,
+      donacion: 4,
     },
   },
 

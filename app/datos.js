@@ -43,9 +43,9 @@ const esColeccion = camino => normalizar(camino).length == 1
 // const esValor     = camino => normalizar(camino).length == 3
 
 export class Datos {
-    static cargarBares(){
+    static cargarCombos(){
       const datos = require('./datos.json')
-      raiz.child('bares').set(datos.bares)
+      raiz.child('combos').set(datos.combos)
     }
 
     static cargarUsuarios(){
@@ -54,12 +54,12 @@ export class Datos {
     }
 
     static cargar(){
-      this.cargarBares()
+      this.cargarCombos()
       this.cargarUsuarios()
     }
 
-    static borrarBares(){
-      raiz.child('bares').set(null)
+    static borrarCombos(){
+      raiz.child('combos').set(null)
     }
 
     static referencia(camino) {
@@ -159,7 +159,7 @@ class Registro {
 }
 
 export class Usuario extends Registro {
-  get foto(){return usu001Ref() }
+  get foto(){return `https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/usuarios%2F${this.id}.png?alt=media` }
 
   get esCliente()     {return this.tipo === 'cliente' }
   get esEmpleado()    {return this.tipo === 'empleado' }

@@ -18,8 +18,6 @@ import { Usuario, Datos } from './datos';
 
 import { Cliente }  from './donacion/Cliente';
 
-import { Examples } from '@shoutem/ui';
-
 export default class ComboSocial extends Component {
   constructor(props) {
     super(props)
@@ -81,7 +79,7 @@ export default class ComboSocial extends Component {
 }
 
 const ejecutarAccion = (accion) => {
-  if(accion==0){ Datos.cargarBares() }
+  if(accion==0){ Datos.cargarCombos() }
   if(accion==1){
     Datos.cargarUsuarios();
     AsyncStorage.getItem('@usuario:id')
@@ -89,7 +87,7 @@ const ejecutarAccion = (accion) => {
       .catch( error => console.log("ERROR Probando getItem", error) )
       // .done()
   }
-  if(accion==2){ Datos.borrarBares() }
+  if(accion==2){ Datos.borrarCombos() }
 }
 
 const ElegirUsuario = (props) => {
@@ -109,7 +107,7 @@ const ElegirUsuario = (props) => {
         <ListarUsuarios titulo="Propietarios" {...props} usuarios={propietarios} />
       </Content>
       <Footer>
-        <Acciones titulos={["+ Bares", "+ Usuarios", "- Bares"]} alElegir={(nroAccion) => ejecutarAccion(nroAccion)} />
+        <Acciones titulos={["+ Combos", "+ Usuarios", "- Combos"]} alElegir={(nroAccion) => ejecutarAccion(nroAccion)} />
       </Footer>
     </Container>
   )
@@ -123,7 +121,7 @@ const ListarUsuarios = (props) => {
       <List dataArray={usuarios}
             renderRow={(usuario) =>
               <ListItem style={{ height:80 }} button onPress={() => props.alElegir(usuario)}>
-                <Thumbnail source={{uri: `https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/usuarios%2F${usuario.id}.png?alt=media`}} size={75} />
+                <Thumbnail source={{uri: usuario.foto}} size={75} />
                 <Text style={Estilo.usuario.nombre}>{usuario.nombre}</Text>
                 <Text style={Estilo.usuario.id}>id:{usuario.id}</Text>
               </ListItem>

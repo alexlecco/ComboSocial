@@ -3,7 +3,11 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
 
-import { Container, Header, Title, Content, Footer, Button, Text, View, Spinner, Icon, } from 'native-base';
+import {
+  Container, Header, Title,
+  Content, Footer, Button,
+  Text, View, Spinner, Icon,
+} from 'native-base';
 
 import { Pagina, Contenido, Cargando } from './../componentes/pagina';
 import { Usuario, Pedido, Plato, Estados } from './../datos'
@@ -11,8 +15,8 @@ import { Estilos, Estilo, Pantalla } from './../styles';
 
 import { PaginaConfirmar } from './pagina_confirmar';
 import { PaginaSeguimiento } from './pagina_seguimiento';
-import { PaginaPedido } from './pagina_donacion';
-import { Donar } from './Donar';
+import { PaginaPedido } from './pagina_pedido';
+import { Pedir } from './Pedir';
 
 const humanizeHora = (segundos) => {
   segundos = Math.floor(segundos)
@@ -25,10 +29,36 @@ const humanizeHora = (segundos) => {
 class Cliente extends Component {
   constructor(props){
     super(props)
-    this.state = { usuario: false }
+    this.state = { usuario: false, platos: false, pedidos: false}
+    console.log("CONSTRUCTOR EN CLIENTE")
 
     // BINDING
     Usuario.registrar(this)
+    Pedido.registrar(this)
+    Plato.registrar(this)
+    this.timer = null
+  }
+
+  alContar = () => {
+    const {contar} = this.state
+    this.setState({contar: (contar ||0)+1})
+  }
+
+  activarReloj(){
+    const {pedidos} = this.state
+    // if(pedidos && pedidos[0].enEspera){
+      if(!this.timer){
+        console.log("Activando el reloj")
+        this.timer = setInterval( this.alContar , 1000)
+      }
+    // } else {
+    //   this.detenerReloj()
+    // }
+  }
+
+  detenerReloj(){
+    console.log("Desactivando el reloj")
+    clearInterval(this.timer)
     this.timer = null
   }
 
@@ -36,23 +66,58 @@ class Cliente extends Component {
     const cliente = this.props.id
 
     Usuario.observar(cliente)
+    Pedido.observar(pedido => pedido.enPedido(cliente))
+    Plato.observar(plato => plato.activo)
+    this.activarReloj()
   }
 
   componentWillUnmount(){
     const { usuario } = this.state
     usuario && usuario.detener()
+    Plato.detener()
+    Pedido.detener()
+    this.detenerReloj()
   }
 
   render(){
-    const {usuario}  = this.state
+    const {usuario, platos, pedidos}  = this.state
 
-    const hayDatos   = usuario
+    const hayDatos   = usuario && platos && pedidos
+    const hayPlatos  = platos  && platos.length  > 0
+    const hayPedidos = platos  && pedidos && pedidos.length > 0
 
-    return < Cargando />
+    if(hayPedidos){
+      var pedido = pedidos[0]
+      var plato  = platos.find(plato => plato.id === pedido.plato)
+
+      // return <Pedir platos={platos} />
+      if(pedido.estado === Estados.pendiente ){
+        return <PaginaConfirmar {...this.props}
+                  usuario={usuario}
+                  pedido={pedido}
+                  plato={plato}
+                  alConfirmar ={ () => pedido.confirmar() }
+                  alCancelar ={ () => pedido.cancelar() } />
+      } else {
+        return <PaginaSeguimiento {...this.props}
+                  usuario={usuario}
+                  pedido={pedido}
+                  plato={plato} />
+      }
+    }
+
+    if(hayPlatos){
+
+      return <PaginaPedido {...this.props}
+                  usuario={usuario}
+                  platos={platos}
+                  alElegir={ plato => Pedido.pedir(usuario, plato) } />
+    }
+
+    return <Cargando />
   }
 }
 
-/*
 class Pago extends Component {
   render(){
     const {demora, precio} = this.props
@@ -68,6 +133,7 @@ class Pago extends Component {
     )
   }
 }
-*/
+
+console.log("IMPORT: Cliente v.3")
 
 export { Cliente }
