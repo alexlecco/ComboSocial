@@ -13,7 +13,6 @@ import { Pagina, Contenido, Cargando } from './componentes/pagina';
 import { Estilos, Estilo, Pantalla } from './styles';
 import { Usuario, Datos } from './datos';
 
-
 import { Cliente }  from './venta/Cliente';
 import { Cocinero } from './cocina/Cocinero';
 import { Cadete }   from './entrega/Cadete';
@@ -102,9 +101,9 @@ const ejecutarAccion = (accion) => {
 }
 
 const ElegirUsuario = (props) => {
-  const clientes  = props.usuarios.filter( u => u.esCliente  )
-  const cocineros = props.usuarios.filter( u => u.esCocinero )
-  const cadetes   = props.usuarios.filter( u => u.esCadete )
+  const clientes     = props.usuarios.filter( u => u.esCliente  )
+  const empleados    = props.usuarios.filter( u => u.esEmpleado )
+  const propietarios = props.usuarios.filter( u => u.esPropietario )
   const { alEjecutar } = props
 
   return (
@@ -114,8 +113,8 @@ const ElegirUsuario = (props) => {
       </Header>
       <Content>
         <ListarUsuarios titulo="Clientes"  {...props} usuarios={clientes} />
-        <ListarUsuarios titulo="Cocineros" {...props} usuarios={cocineros} />
-        <ListarUsuarios titulo="Cadetes"   {...props} usuarios={cadetes} />
+        <ListarUsuarios titulo="Empleados" {...props} usuarios={empleados} />
+        <ListarUsuarios titulo="Propietarios"   {...props} usuarios={propietarios} />
       </Content>
       <Footer>
         <Acciones titulos={["+ Platos", "+ Usuarios", "- Pedidos"]} alElegir={(nroAccion) => ejecutarAccion(nroAccion)} />

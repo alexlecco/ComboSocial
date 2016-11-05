@@ -157,9 +157,9 @@ class Registro {
 export class Usuario extends Registro {
   get foto(){return `https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/usuarios%2F${this.id}.png?alt=media` }
 
-  get esCliente() {return this.tipo === 'cliente' }
-  get esCocinero(){return this.tipo === 'cocinero'}
-  get esCadete()  {return this.tipo === 'cadete'  }
+  get esCliente()     {return this.tipo === 'cliente' }
+  get esEmpleado()    {return this.tipo === 'empleado' }
+  get esPropietario() {return this.tipo === 'propietario' }
 }
 
 export class Plato extends Registro {
