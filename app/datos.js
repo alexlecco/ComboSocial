@@ -9,17 +9,11 @@ const dbconfig = {
   storageBucket: "combo-social.appspot.com",
 };
 
-export const ListaEstados = 'pendiente | aceptada | cancelada'.split(' | ')
+export const ListaEstados = 'pendiente | pedido | aceptado | disponible | retirado | entregado | recibido | cancelado'.split(' | ')
 export const Estados      = ListaEstados.reduce( (h, x) => Object.assign(h, {[x]:x}), {} )
 
 const base = firebase.initializeApp(dbconfig);
 const raiz = base.database().ref()
-const almacenamiento = firebase.storage()
-const almacenamientoRef = almacenamiento.ref()
-const usuariosRef = almacenamientoRef.child('usuarios')
-const usu001Ref = usuariosRef.child('usu001.png')
-
-firebase.storage().ref('Images/image1.jpg');
 
 const values = objeto => Object.keys(objeto || []).map(clave => objeto[clave])
 
@@ -35,6 +29,7 @@ const esID     = item => esString(item) && FormatoID.test(item)
 const esFuncion= item => typeof(item) === 'function'
 
 // CAPA DE DATOS
+
 const normalizar = camino => (Array.isArray(camino) ? camino : [camino]).filter(campo => !!campo)
 const url        = camino => camino.join('/').toLowerCase()
 
@@ -43,9 +38,10 @@ const esColeccion = camino => normalizar(camino).length == 1
 // const esValor     = camino => normalizar(camino).length == 3
 
 export class Datos {
-    static cargarCombos(){
+
+    static cargarPlatos(){
       const datos = require('./datos.json')
-      raiz.child('combos').set(datos.combos)
+      raiz.child('platos').set(datos.platos)
     }
 
     static cargarUsuarios(){
@@ -54,12 +50,12 @@ export class Datos {
     }
 
     static cargar(){
-      this.cargarCombos()
+      this.cargarPlatos()
       this.cargarUsuarios()
     }
 
-    static borrarCombos(){
-      raiz.child('combos').set(null)
+    static borrarPedidos(){
+      raiz.child('pedidos').set(null)
     }
 
     static referencia(camino) {
@@ -161,12 +157,173 @@ class Registro {
 export class Usuario extends Registro {
   get foto(){return `https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/usuarios%2F${this.id}.png?alt=media` }
 
-  get esCliente()     {return this.tipo === 'cliente' }
-  get esEmpleado()    {return this.tipo === 'empleado' }
-  get esPropietario() {return this.tipo === 'propietario' }
+  get esCliente() {return this.tipo === 'cliente' }
+  get esCocinero(){return this.tipo === 'cocinero'}
+  get esCadete()  {return this.tipo === 'cadete'  }
 }
 
-export class Bar extends Registro {
+export class Plato extends Registro {
   get foto(){return `https://dl.dropboxusercontent.com/u/1086383/platos/${this.id}.jpg`}
-  get detalle(){ return `El bar: ${this.nombre} ofrece el mejor servicio`}
+  get detalle(){ return `Esta es una descripcion larga de ${this.descripcion}, solo para mostrar en el demo.`}
+}
+
+export class Pedido extends Registro {
+    static get EsperaMaxima(){ return 5 * 60 } // 30 minutos o GRATIS
+
+    static ordenCronologico(a, b) {
+      const horaA = a.horas[Estados.pedido]
+      const horaB = b.horas[Estados.pedido]
+      return horaA && horaB ? horaA - horaB : 0
+    }
+
+    get horas(){
+      var horas = {}
+      values(this.historia).forEach( ({estado, hora}) => horas[estado] = new Date(hora) )
+      return horas
+    }
+
+    tiempoEntre(desde, hasta){
+      const tiempoDesde = this.horas[desde]
+      const tiempoHasta = this.horas[hasta] || (new Date())
+      return (tiempoDesde && tiempoHasta) ? (tiempoHasta - tiempoDesde) / 1000 : null
+    }
+
+    get tiempoPedido(){
+      return this.tiempoEntre(Estados.pedido, Estados.recibido)
+    }
+
+    get tiempoValoracion(){
+      return this.tiempoEntre(Estados.entregado, Estados.recibido)
+    }
+
+    get tiempoCoccion(){
+      return this.tiempoEntre(Estados.aceptado, Estados.entregado)
+    }
+
+    get tiempoFaltante(){
+      return Pedido.EsperaMaxima - this.tiempoEntre(Estados.pedido, Estados.entregado)
+    }
+
+    // get salio(){
+    //   const retirado = this.horas[Estados.retirado]
+    //   return retirado ? (new Date() - retirado) / 1000 : null
+    // }
+    //
+    // get duracion(){
+    //   const pedido    = this.horas[Estados.pedido]
+    //   const entregado = this.horas[Estados.entregado]
+    //   return pedido && entregado ? (entregado - pedido) / 1000 : null
+    // }
+
+    get activo(){ return this.estado != Estados.cancelado && this.estado != Estados.pendiente && this.estado != Estados.recibido }
+
+    enPedido(cliente){
+      return this.cliente === cliente && !(this.estado == Estados.recibido || this.estado == Estados.cancelado)
+    }
+
+    enCocina(cocinero){
+      return this.estado === Estados.pedido || this.cocinero === cocinero && (this.estado === Estados.aceptado || this.estado === Estados.disponible || this.estado === Estados.entregado)
+    }
+
+    enEntrega(cadete){
+      return this.estado === Estados.disponible || this.cadete === cadete && this.estado === Estados.retirado
+    }
+
+    get enEspera(){
+      return [Estados.aceptado, Estados.disponible, Estados.retirado].includes(this.estado)
+    }
+
+    get plato(){
+      return this.platos[0].id
+    }
+
+    // ACCIONES
+    static pedir(cliente, plato){
+      // const pedido = new Pedido({cliente: cliente.id, {platos: {plato: {id: plato.id, cantidad: 1}}})
+      const pedido = new Pedido({cliente: cliente.id})
+      pedido.agregar(plato.id)
+      pedido.cambiarEstado(Estados.pendiente)
+    }
+
+    entregarEn(lugar, forzar = true){
+      if(forzar){
+        this.lugar = lugar
+      } else {
+        this.lugar = (this.lugar === lugar ? null : lugar)
+      }
+      this.escribir()
+    }
+
+    cambiarEstado(estado){
+      if(this.estado != estado){
+        this.estado = estado
+        this.historia = this.historia || []
+        this.historia.push({ estado, hora: new Date().toString() })
+      }
+      this.escribir()
+    }
+
+    agregar(plato){
+      this.platos = this.platos || []
+      let actual = this.platos.find( p => p.id == plato)
+      if(actual){
+        actual.cantidad += 1
+      } else {
+        this.platos.push({ id: plato, cantidad: 1, valoracion: 0 })
+      }
+      this.escribir()
+    }
+
+    quitar(plato){
+      this.platos = this.platos || []
+      let actual = this.platos.find( p => p.id == platos)
+      if(actual){
+        actual.cantidad -= 1
+      }
+      this.platos = this.platos.filter( p => p.cantidad > 0)
+      this.escribir()
+    }
+
+    aceptar(cocinero){
+      this.cocinero = cocinero
+      this.cambiarEstado(Estados.aceptado)
+    }
+
+    disponer(){
+      this.cambiarEstado(Estados.disponible)
+    }
+
+    confirmar(){
+      this.cambiarEstado(Estados.pedido)
+    }
+
+    cancelar(){
+      this.cambiarEstado(Estados.cancelado)
+    }
+
+    retirar(cadete){
+      this.cadete = cadete
+      this.cambiarEstado(Estados.retirado)
+    }
+
+    entregar(){
+      this.cambiarEstado(Estados.entregado)
+    }
+
+    get valoracion(){
+      return this.platos[0].valoracion || 0
+    }
+
+    ponerValoracion(valor){
+      if(valor >= 0 || valor <= 5){
+        this.platos[0].valoracion = valor
+      }
+    }
+
+    valorar(){
+      if(this.valoracion >= 0){
+        this.cambiarEstado(Estados.recibido)
+      }
+    }
+
 }

@@ -2,26 +2,30 @@
 
 import React, { Component } from 'react';
 
-import { AsyncStorage, StyleSheet, } from 'react-native';
+import { AsyncStorage } from 'react-native';
 
-import {
-  Container, Header, Title,
-  Subtitle, Content, Footer,
-  List, ListItem, Thumbnail,
-  Button, Text, View,
-} from 'native-base';
+import { Container, Header, Title, Subtitle, Content, Footer, List, ListItem, Thumbnail, Button, Text, View } from 'native-base';
+
+// var DigitsAuthenticateButton = require('./DigitsAuthenticateButton');
 
 import { Acciones } from './componentes/acciones.js';
 import { Pagina, Contenido, Cargando } from './componentes/pagina';
 import { Estilos, Estilo, Pantalla } from './styles';
 import { Usuario, Datos } from './datos';
 
-import { Cliente }  from './donacion/Cliente';
+
+import { Cliente }  from './venta/Cliente';
+import { Cocinero } from './cocina/Cocinero';
+import { Cadete }   from './entrega/Cadete';
+
+import { Examples } from '@shoutem/ui';
 
 export default class ComboSocial extends Component {
-  constructor(props) {
+
+  constructor (props){
     super(props)
 
+    // Datos.cargarPlatos()
     this.state = { usuarios: false, usuario: false }
     Usuario.registrar(this)
   }
@@ -46,12 +50,15 @@ export default class ComboSocial extends Component {
   }
 
   leerUsuario(){
+    console.log("PROBANDO leerUsuario");
+
     AsyncStorage.getItem('@usuario:id')
       .then( valor => Usuario.leer(valor) )
       .catch( error => console.log("ERROR leerUsuario", error) )
   }
 
   escribirUsuario(id){
+    console.log("ESCRIBIR USUARIO:ID ", id)
     AsyncStorage.setItem('@usuario:id', id)
       .then( () => console.log("USUARIO GUARDADO") )
       .catch( error => console.log("USUARIO CON ERROR", error))
@@ -63,51 +70,55 @@ export default class ComboSocial extends Component {
   }
 
   alSalir() {
-     this.setState({ usuario: null })
-     AsyncStorage.removeItem('@usuario:id');
+    this.setState({ usuario: null })
+    AsyncStorage.removeItem('@usuario:id');
   }
 
   render() {
+    // return <Examples />
     const { usuarios, usuario } = this.state
 
-    if(!usuarios)  { return <Cargando/> }
+    if(!usuarios)  { return <Cargando /> }
 
     if(!usuario) { return <ElegirUsuario usuarios={usuarios} alElegir={ usuario => this.alIngresar(usuario)} />}
 
-    if(usuario.esCliente ) { return <Cliente id={usuario.id} alSalir={ () => this.alSalir() }/> }
+    if(usuario.esCliente ) { return <Cliente  id={usuario.id} alSalir={ () => this.alSalir() }/> }
+    if(usuario.esCocinero) { return <Cocinero id={usuario.id} alSalir={ () => this.alSalir() }/> }
+    if(usuario.esCadete)   { return <Cadete   id={usuario.id} alSalir={ () => this.alSalir() }/> }
   }
 }
 
 const ejecutarAccion = (accion) => {
-  if(accion==0){ Datos.cargarCombos() }
+  if(accion==0){ Datos.cargarPlatos() }
   if(accion==1){
     Datos.cargarUsuarios();
+    console.log("PROBANDO getItem");
     AsyncStorage.getItem('@usuario:id')
       .then( valor => console.log("OK Probando getItem : ", valor) )
       .catch( error => console.log("ERROR Probando getItem", error) )
       // .done()
   }
-  if(accion==2){ Datos.borrarCombos() }
+  if(accion==2){ Datos.borrarPedidos() }
 }
 
 const ElegirUsuario = (props) => {
-  const clientes     = props.usuarios.filter( u => u.esCliente )
-  const empleados    = props.usuarios.filter( u => u.esEmpleado )
-  const propietarios = props.usuarios.filter( u => u.esPropietario )
+  const clientes  = props.usuarios.filter( u => u.esCliente  )
+  const cocineros = props.usuarios.filter( u => u.esCocinero )
+  const cadetes   = props.usuarios.filter( u => u.esCadete )
   const { alEjecutar } = props
 
   return (
     <Container>
       <Header>
-        <Title> Combo Social - Panel de control </Title>
+        <Title> El Plato del Día - Administración </Title>
       </Header>
       <Content>
-        <ListarUsuarios titulo="Clientes"     {...props} usuarios={clientes} />
-        <ListarUsuarios titulo="Empleados"    {...props} usuarios={empleados} />
-        <ListarUsuarios titulo="Propietarios" {...props} usuarios={propietarios} />
+        <ListarUsuarios titulo="Clientes"  {...props} usuarios={clientes} />
+        <ListarUsuarios titulo="Cocineros" {...props} usuarios={cocineros} />
+        <ListarUsuarios titulo="Cadetes"   {...props} usuarios={cadetes} />
       </Content>
       <Footer>
-        <Acciones titulos={["+ Combos", "+ Usuarios", "- Combos"]} alElegir={(nroAccion) => ejecutarAccion(nroAccion)} />
+        <Acciones titulos={["+ Platos", "+ Usuarios", "- Pedidos"]} alElegir={(nroAccion) => ejecutarAccion(nroAccion)} />
       </Footer>
     </Container>
   )
@@ -130,24 +141,3 @@ const ListarUsuarios = (props) => {
    </View>
  )
 }
-
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5991c',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#5A5A5A',
-    marginBottom: 5,
-  },
-});
