@@ -1,3 +1,5 @@
+// 2da
+
 'use strict';
 
 import React, { Component } from 'react';
@@ -6,8 +8,7 @@ import { Image } from 'react-native';
 import {
   Container, Header, Title, Content,
   Button, Text, View,
-  Icon,
-  List, ListItem, Radio,
+  Icon, List, ListItem, Radio,
 } from 'native-base';
 
 import StarRating from 'react-native-star-rating';
@@ -30,19 +31,11 @@ class PaginaConfirmar extends Component {
           <MostrarCombo combo={combo} compacto={true}/>
           <List>
             <ListItem>
-              <Text style={{fontWeight:'bold'}}> ¿Dónde queres comer? </Text>
-            </ListItem>
-            <ListItem button onPress={ () => pedido.entregarEn('oficina', false) }>
-              <Radio selected={ pedido.lugar === "oficina" } onPress={ () => pedido.entregarEn('oficina', false) } />
-              <Text> En la oficina</Text>
-            </ListItem>
-            <ListItem button onPress={ () => pedido.entregarEn('bar', false) }>
-              <Radio selected={ pedido.lugar === "bar" } onPress={ () => pedido.entregarEn('bar', false) } />
-              <Text> En el bar</Text>
+              <Text style={{fontWeight:'bold'}}> ¿Estás seguro que querés este combo? </Text>
             </ListItem>
           </List>
           <Button block danger style={Pantalla.accion1} onPress={ () => alCancelar() }><Icon name='ios-close-circle' /> Cancelar!</Button>
-          <Button block disabled={!pedido.lugar} style={Pantalla.accion2} onPress={ () => alConfirmar() }><Icon name='ios-checkmark' /> Confirmar!</Button>
+          <Button block style={Pantalla.accion2} onPress={ () => alConfirmar() }><Icon name='ios-checkmark' /> Confirmar!</Button>
         </Contenido>
       </Pagina>
     )

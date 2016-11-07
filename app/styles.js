@@ -92,7 +92,7 @@ const Combo = StyleSheet.create({
   },
 
   detalle: {
-    fontSize: 12,
+    fontSize: 20,
     color: 'gray',
   },
 
