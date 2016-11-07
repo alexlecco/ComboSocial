@@ -14,7 +14,7 @@ import {
 import StarRating from 'react-native-star-rating';
 import { Pagina, Contenido } from './../componentes/pagina';
 
-import { Usuario, Pedido, Combo, Estados } from './../datos'
+import { Usuario, Donacion, Combo, Estados } from './../datos'
 import { Estilos, Estilo, Pantalla } from './../styles';
 
 import { MostrarCombo } from './Combo';
@@ -22,9 +22,9 @@ import { MostrarCombo } from './Combo';
 class PaginaConfirmar extends Component {
 
   render(){
-    const { pedido, combo,  alCancelar, alConfirmar, alSalir, usuario, lugar } = this.props
-    const { cadete, estado, cliente } = pedido
-    console.log("PaginasConfirmar", typeof(pedido), pedido.entregarEn)
+    const { donacion, combo,  alCancelar, alConfirmar, alSalir, usuario, lugar } = this.props
+    const { cadete, estado, cliente } = donacion
+    console.log("PaginasConfirmar", typeof(donacion), donacion.entregarEn)
     return (
       <Pagina titulo="Confirmar" alSalir={() => alSalir() }>
         <Contenido>

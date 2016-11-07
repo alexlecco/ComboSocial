@@ -12,18 +12,18 @@ import {
 } from 'native-base';
 
 import { Pagina, Contenido, Cargando } from './../componentes/pagina';
-import { Usuario, Pedido, Combo, Estados } from './../datos'
+import { Usuario, Donacion, Combo, Estados } from './../datos'
 import { Estilos, Estilo, Pantalla, Item } from './../styles';
 
 class Empleado extends Component {
   constructor(props){
     super(props)
 
-    this.state = { empleado: false, combos: false, pedidos: false }
+    this.state = { empleado: false, combos: false, donaciones: false }
 
     Usuario.registrar(this)
     Combo.registrar(this)
-    Pedido.registrar(this)
+    Donacion.registrar(this)
   }
 
   componentDidMount() {
@@ -32,7 +32,7 @@ class Empleado extends Component {
     Usuario.observar(empleado, 'empleado')
     Usuario.observar(usuario => usuario.esCliente)
     Combo.observar(combo => combo.activo)
-    Pedido.observar(pedido => pedido.enCocina(empleado))
+    Donacion.observar(donacion => donacion.enCocina(empleado))
   }
 
   componentWillUnmount(){
@@ -41,36 +41,36 @@ class Empleado extends Component {
 
     Usuario.detener()
     Combo.detener()
-    Pedido.detener()
+    Donacion.detener()
   }
 
   alAceptar = (combo) => {
-      const { pedidos } = this.state
+      const { donaciones } = this.state
       const empleado = this.props.id
-      const pedido = pedidos.find(pedido => pedido.combo === combo.id && pedido.estado === Estados.pedido)
-      pedido && pedido.aceptar(empleado)
+      const donacion = donaciones.find(donacion => donacion.combo === combo.id && donacion.estado === Estados.donado)
+      donacion && donacion.aceptar(empleado)
   }
 
   alDisponer = (combo) => {
-    const { pedidos } = this.state
+    const { donaciones } = this.state
     const empleado = this.props.id
-    const pedido = pedidos.find(pedido => pedido.combo === combo.id && pedido.estado === Estados.aceptado && pedido.empleado === empleado)
-    pedido && pedido.entregar()
+    const donacion = donaciones.find(donacion => donacion.combo === combo.id && donacion.estado === Estados.aceptado && donacion.empleado === empleado)
+    donacion && donacion.entregar()
   }
 
   calcularComandaDetallada(){
-    const {pedidos, combos, usuarios} = this.state
+    const {donaciones, combos, usuarios} = this.state
 
-    return pedidos.sort(Pedido.ordenCronologico).map( pedido => ({
-          cliente: usuarios.find( cliente => cliente.id === pedido.cliente ),
-          combo:   combos.find( combo => combo.id === pedido.combo ),
-          pedido:  pedido })
+    return donaciones.sort(Donacion.ordenCronologico).map( donacion => ({
+          cliente: usuarios.find( cliente => cliente.id === donacion.cliente ),
+          combo:   combos.find( combo => combo.id === donacion.combo ),
+          donacion:  donacion })
         )
   }
 
   render(){
-    const {usuario, combos, pedidos}  = this.state
-    const hayDatos = usuario && combos && pedidos
+    const {usuario, combos, donaciones}  = this.state
+    const hayDatos = usuario && combos && donaciones
 
     if(!hayDatos) { return <Cargando /> }
 
@@ -88,13 +88,13 @@ const AdministrarComanda = (props) => {
         <Button transparent onPress={ () => alSalir() } ><Icon name='ios-home' /></Button>
       </Header>
       <Content style={{flex:1}}>
-        <List dataArray={comanda} renderRow={(item) => <ItemPedido {...props} item={item} />} />
+        <List dataArray={comanda} renderRow={(item) => <ItemDonacion {...props} item={item} />} />
       </Content>
     </Container>
   )
 }
 
-const ItemPedido = ({item: {cliente, combo, pedido}, alAceptar, alDisponer}) =>
+const ItemDonacion = ({item: {cliente, combo, donacion}, alAceptar, alDisponer}) =>
   <ListItem>
 
       <Card>
@@ -115,9 +115,9 @@ const ItemPedido = ({item: {cliente, combo, pedido}, alAceptar, alDisponer}) =>
             </Col>
             <Col>
               <View style={Item.centrar}>
-                {pedido.estado === Estados.pedido && <Button onPress={ () => alAceptar(combo) }> Producir </Button>}
-                {pedido.estado === Estados.aceptado && <Button success onPress={ () => alDisponer(combo)}> Entregar </Button>}
-                {pedido.estado === Estados.entregado && <Text> Esperando valoración... </Text>}
+                {donacion.estado === Estados.donado && <Button onPress={ () => alAceptar(combo) }> Producir </Button>}
+                {donacion.estado === Estados.aceptado && <Button success onPress={ () => alDisponer(combo)}> Entregar </Button>}
+                {donacion.estado === Estados.entregado && <Text> Esperando valoración... </Text>}
               </View>
             </Col>
           </Grid>

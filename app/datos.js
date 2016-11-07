@@ -9,7 +9,7 @@ const dbconfig = {
   storageBucket: "combo-social.appspot.com",
 };
 
-export const ListaEstados = 'pendiente | pedido | aceptado | disponible | retirado | entregado | recibido | cancelado'.split(' | ')
+export const ListaEstados = 'pendiente | donado | aceptado | disponible | retirado | entregado | recibido | cancelado'.split(' | ')
 export const Estados      = ListaEstados.reduce( (h, x) => Object.assign(h, {[x]:x}), {} )
 
 const base = firebase.initializeApp(dbconfig);
@@ -54,8 +54,8 @@ export class Datos {
       this.cargarUsuarios()
     }
 
-    static borrarPedidos(){
-      raiz.child('pedidos').set(null)
+    static borrarDonaciones(){
+      raiz.child('donaciones').set(null)
     }
 
     static referencia(camino) {
@@ -167,12 +167,12 @@ export class Combo extends Registro {
   get detalle(){ return `Comprando este combo estás donando $${this.contribución} al comedor Don Bosco`}
 }
 
-export class Pedido extends Registro {
+export class Donacion extends Registro {
     static get EsperaMaxima(){ return 5 * 60 } // 30 minutos o GRATIS
 
     static ordenCronologico(a, b) {
-      const horaA = a.horas[Estados.pedido]
-      const horaB = b.horas[Estados.pedido]
+      const horaA = a.horas[Estados.donado]
+      const horaB = b.horas[Estados.donado]
       return horaA && horaB ? horaA - horaB : 0
     }
 
@@ -188,8 +188,8 @@ export class Pedido extends Registro {
       return (tiempoDesde && tiempoHasta) ? (tiempoHasta - tiempoDesde) / 1000 : null
     }
 
-    get tiempoPedido(){
-      return this.tiempoEntre(Estados.pedido, Estados.recibido)
+    get tiempoDonacion(){
+      return this.tiempoEntre(Estados.donado, Estados.recibido)
     }
 
     get tiempoValoracion(){
@@ -201,7 +201,7 @@ export class Pedido extends Registro {
     }
 
     get tiempoFaltante(){
-      return Pedido.EsperaMaxima - this.tiempoEntre(Estados.pedido, Estados.entregado)
+      return Donacion.EsperaMaxima - this.tiempoEntre(Estados.donado, Estados.entregado)
     }
 
     // get salio(){
@@ -210,19 +210,19 @@ export class Pedido extends Registro {
     // }
     //
     // get duracion(){
-    //   const pedido    = this.horas[Estados.pedido]
+    //   const donado    = this.horas[Estados.donado]
     //   const entregado = this.horas[Estados.entregado]
-    //   return pedido && entregado ? (entregado - pedido) / 1000 : null
+    //   return donado && entregado ? (entregado - donado) / 1000 : null
     // }
 
     get activo(){ return this.estado != Estados.cancelado && this.estado != Estados.pendiente && this.estado != Estados.recibido }
 
-    enPedido(cliente){
+    enDonacion(cliente){
       return this.cliente === cliente && !(this.estado == Estados.recibido || this.estado == Estados.cancelado)
     }
 
     enCocina(empleado){
-      return this.estado === Estados.pedido || this.empleado === empleado && (this.estado === Estados.aceptado || this.estado === Estados.disponible || this.estado === Estados.entregado)
+      return this.estado === Estados.donado || this.empleado === empleado && (this.estado === Estados.aceptado || this.estado === Estados.disponible || this.estado === Estados.entregado)
     }
 
     enEntrega(cadete){
@@ -239,10 +239,10 @@ export class Pedido extends Registro {
 
     // ACCIONES
     static pedir(cliente, combo){
-      // const pedido = new Pedido({cliente: cliente.id, {combos: {combo: {id: combo.id, cantidad: 1}}})
-      const pedido = new Pedido({cliente: cliente.id})
-      pedido.agregar(combo.id)
-      pedido.cambiarEstado(Estados.pendiente)
+      // const donado = new Donacion({cliente: cliente.id, {combos: {combo: {id: combo.id, cantidad: 1}}})
+      const donado = new Donacion({cliente: cliente.id})
+      donado.agregar(combo.id)
+      donado.cambiarEstado(Estados.pendiente)
     }
 
     entregarEn(lugar, forzar = true){
@@ -294,7 +294,7 @@ export class Pedido extends Registro {
     }
 
     confirmar(){
-      this.cambiarEstado(Estados.pedido)
+      this.cambiarEstado(Estados.donado)
     }
 
     cancelar(){

@@ -10,7 +10,6 @@ import { IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator } from 'rn-v
 
 import { Paginas, Pagina, Contenido } from './../componentes/pagina';
 
-// import { Usuario, Pedido, Combo, Estados } from './../datos'
 import { Estilos, Estilo, Pantalla } from './../styles';
 
 const humanizeHora = (segundos) => {

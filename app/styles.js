@@ -103,7 +103,7 @@ const Combo = StyleSheet.create({
   },
 });
 
-const Pedido = StyleSheet.create({
+const Donacion = StyleSheet.create({
   descripcion: {
     fontSize: 10,
     color: 'gray',
@@ -138,5 +138,5 @@ const Usuario = StyleSheet.create({
   },
 });
 
-const Estilo = {combo: Combo, pedido: Pedido, usuario: Usuario};
+const Estilo = {combo: Combo, donacion: Donacion, usuario: Usuario};
 export {Estilos, Estilo, Pantalla, Item};

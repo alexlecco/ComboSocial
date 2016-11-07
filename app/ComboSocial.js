@@ -98,7 +98,7 @@ const ejecutarAccion = (accion) => {
       .catch( error => console.log("ERROR Probando getItem", error) )
       // .done()
   }
-  if(accion==2){ Datos.borrarPedidos() }
+  if(accion==2){ Datos.borrarDonaciones() }
 }
 
 const ElegirUsuario = (props) => {
@@ -118,7 +118,7 @@ const ElegirUsuario = (props) => {
         <ListarUsuarios titulo="Propietarios" {...props} usuarios={propietarios} />
       </Content>
       <Footer>
-        <Acciones titulos={["+ Combos", "+ Usuarios", "- Pedidos"]} alElegir={(nroAccion) => ejecutarAccion(nroAccion)} />
+        <Acciones titulos={["+ Combos", "+ Usuarios", "- Donaciones"]} alElegir={(nroAccion) => ejecutarAccion(nroAccion)} />
       </Footer>
     </Container>
   )

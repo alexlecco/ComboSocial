@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 
 import { Paginas, Pagina, Contenido } from './../componentes/pagina';
 
-import { Usuario, Pedido, Combo, Estados } from './../datos'
+import { Usuario, Donacion, Combo, Estados } from './../datos'
 import { Estilos, Estilo, Pantalla } from './../styles';
 
 import { Screen, View, Card, Image, Subtitle, Caption, Icon, Button, Text, ListView} from '@shoutem/ui';
@@ -17,7 +17,7 @@ const humanizeHora = (segundos) => {
   return `${h > 0 ? h + 'h ' : ''}${m > 0 ? m + 'm ' : ''}${s > 0 ? s + 's' : ''}`
 }
 
-class Pedir extends Component {
+class Donar extends Component {
   render(){
     const { combos, alElegir, alSalir, usuario, presentacion } = this.props
     return (
@@ -28,12 +28,6 @@ class Pedir extends Component {
           renderRow={(combo)=><Text>{combo.id}</Text>}
         />
       </View>
-      // <Pagina titulo={"Realizar Pedidos"} alSalir={() => alSalir() }>
-      //   <IndicatorViewPager style={Pantalla.pagina} indicator={ this.generarPuntos(combos.length + presentacion ? 1 : 0) }>
-      //     {!!presentacion &&<View><PaginaPresentacion /></View>}
-      //     {combos.map( (combo, indice) => <View key={indice}><PaginaProducto combo={combo} alElegir={ () => alElegir(combo) }/></View> )}
-      //   </IndicatorViewPager>
-      // </Pagina>
     )
   }
 
@@ -82,4 +76,4 @@ const Precio = ({precio}) =>
   </View>
 
 
-export { Pedir }
+export { Donar }

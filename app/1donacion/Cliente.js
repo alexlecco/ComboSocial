@@ -6,13 +6,13 @@ import { Image } from 'react-native';
 import { Container, Header, Title, Content, Footer, Button, Text, View, Spinner, Icon, } from 'native-base';
 
 import { Pagina, Contenido, Cargando } from './../componentes/pagina';
-import { Usuario, Pedido, Combo, Estados } from './../datos'
+import { Usuario, Donacion, Combo, Estados } from './../datos'
 import { Estilos, Estilo, Pantalla } from './../styles';
 
 import { PaginaConfirmar } from './pagina_confirmar';
 import { PaginaSeguimiento } from './pagina_seguimiento';
-import { PaginaPedido } from './pagina_pedido';
-import { Pedir } from './Pedir';
+import { PaginaDonacion } from './pagina_donacion';
+import { Donar } from './Donar';
 
 const humanizeHora = (segundos) => {
   segundos = Math.floor(segundos)
@@ -25,11 +25,11 @@ const humanizeHora = (segundos) => {
 class Cliente extends Component {
   constructor(props){
     super(props)
-    this.state = { usuario: false, combos: false, pedidos: false}
+    this.state = { usuario: false, combos: false, donaciones: false}
 
     // BINDING
     Usuario.registrar(this)
-    Pedido.registrar(this)
+    Donacion.registrar(this)
     Combo.registrar(this)
     this.timer = null
   }
@@ -40,8 +40,8 @@ class Cliente extends Component {
   }
 
   activarReloj(){
-    const {pedidos} = this.state
-    // if(pedidos && pedidos[0].enEspera){
+    const {donaciones} = this.state
+    // if(donaciones && donaciones[0].enEspera){
       if(!this.timer){
         console.log("Activando el reloj")
         this.timer = setInterval( this.alContar , 1000)
@@ -61,7 +61,7 @@ class Cliente extends Component {
     const cliente = this.props.id
 
     Usuario.observar(cliente)
-    Pedido.observar(pedido => pedido.enPedido(cliente))
+    Donacion.observar(donacion => donacion.enDonacion(cliente))
     Combo.observar(combo => combo.activo)
     this.activarReloj()
   }
@@ -70,43 +70,42 @@ class Cliente extends Component {
     const { usuario } = this.state
     usuario && usuario.detener()
     Combo.detener()
-    Pedido.detener()
+    Donacion.detener()
     this.detenerReloj()
   }
 
   render(){
-    const {usuario, combos, pedidos}  = this.state
+    const {usuario, combos, donaciones}  = this.state
 
-    const hayDatos   = usuario && combos && pedidos
+    const hayDatos   = usuario && combos && donaciones
     const hayCombos  = combos  && combos.length  > 0
-    const hayPedidos = combos  && pedidos && pedidos.length > 0
+    const hayDonaciones = combos  && donaciones && donaciones.length > 0
 
-    if(hayPedidos){
-      var pedido = pedidos[0]
-      var combo  = combos.find(combo => combo.id === pedido.combo)
+    if(hayDonaciones){
+      var donacion = donaciones[0]
+      var combo  = combos.find(combo => combo.id === donacion.combo)
 
-      // return <Pedir combos={combos} />
-      if(pedido.estado === Estados.pendiente ){
+      if(donacion.estado === Estados.pendiente ){
         return <PaginaConfirmar {...this.props}
                   usuario={usuario}
-                  pedido={pedido}
+                  donacion={donacion}
                   combo={combo}
-                  alConfirmar ={ () => pedido.confirmar() }
-                  alCancelar ={ () => pedido.cancelar() } />
+                  alConfirmar ={ () => donacion.confirmar() }
+                  alCancelar ={ () => donacion.cancelar() } />
       } else {
         return <PaginaSeguimiento {...this.props}
                   usuario={usuario}
-                  pedido={pedido}
+                  donacion={donacion}
                   combo={combo} />
       }
     }
 
     if(hayCombos){
 
-      return <PaginaPedido {...this.props}
+      return <PaginaDonacion {...this.props}
                   usuario={usuario}
                   combos={combos}
-                  alElegir={ combo => Pedido.pedir(usuario, combo) } />
+                  alElegir={ combo => Donacion.pedir(usuario, combo) } />
     }
 
     return <Cargando />

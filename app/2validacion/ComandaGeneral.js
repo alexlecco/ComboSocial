@@ -5,18 +5,18 @@ import { Image } from 'react-native';
 import { Container, Header, Title, Content, Grid, Col, Row, List, ListItem, Card, CardItem, Button, Text, View, Spinner, Icon, } from 'native-base';
 
 import { Pagina, Contenido, Cargando } from './../componentes/pagina';
-import { Usuario, Pedido, Combo, Estados } from './../datos'
+import { Usuario, Donacion, Combo, Estados } from './../datos'
 import { Estilos, Estilo, Pantalla } from './../styles';
 
 class Cocinero extends Component {
   constructor(props){
     super(props)
 
-    this.state = { cocinero: false, combos: false, pedidos: false }
+    this.state = { cocinero: false, combos: false, donaciones: false }
 
     Usuario.registrar(this)
     Combo.registrar(this)
-    Pedido.registrar(this)
+    Donacion.registrar(this)
   }
 
   componentDidMount() {
@@ -25,7 +25,7 @@ class Cocinero extends Component {
     Usuario.observar(cocinero, 'cocinero')
     Usuario.observar(usuario => usuario.esCliente)
     Combo.observar(combo => combo.activo)
-    Pedido.observar(pedido => pedido.enCocina(cocinero))
+    Donacion.observar(donacion => donacion.enCocina(cocinero))
   }
 
   componentWillUnmount(){
@@ -34,30 +34,30 @@ class Cocinero extends Component {
 
     Usuario.detener()
     Combo.detener()
-    Pedido.detener()
+    Donacion.detener()
   }
 
   alAceptar = (combo) => {
-      const { pedidos } = this.state
+      const { donaciones } = this.state
       const cocinero = this.props.id
-      const pedido = pedidos.find(pedido => pedido.combo === combo.id && pedido.estado === Estados.pedido)
-      pedido && pedido.aceptar(cocinero)
+      const donacion = donaciones.find(donacion => donacion.combo === combo.id && donacion.estado === Estados.donado)
+      donacion && donacion.aceptar(cocinero)
   }
 
   alDisponer = (combo) => {
-    const { pedidos } = this.state
+    const { donaciones } = this.state
     const cocinero = this.props.id
 
-    const pedido = pedidos.find(pedido => pedido.combo === combo.id && pedido.estado === Estados.aceptado && pedido.cocinero === cocinero)
-    pedido && pedido.entregar()
+    const donacion = donaciones.find(donacion => donacion.combo === combo.id && donacion.estado === Estados.aceptado && donacion.cocinero === cocinero)
+    donacion && donacion.entregar()
   }
 
   calcularComanda(){
-    const {pedidos, combos} = this.state
+    const {donaciones, combos} = this.state
 
     var comanda = {}
     combos.forEach( combo => comanda[combo.id] = { combo, estados: {} } )
-    pedidos.forEach( ({combo, estado}) => {
+    donaciones.forEach( ({combo, estado}) => {
         const estados = comanda[combo].estados
         estados[estado] = (estados[estado] || 0) + 1
       }
@@ -66,13 +66,13 @@ class Cocinero extends Component {
   }
 
   organizarComanda(){
-    const {pedidos, combos, usuarios} = this.state
+    const {donaciones, combos, usuarios} = this.state
 
   }
 
   render(){
-    const {usuario, combos, pedidos}  = this.state
-    const hayDatos = usuario && combos && pedidos
+    const {usuario, combos, donaciones}  = this.state
+    const hayDatos = usuario && combos && donaciones
 
     if(!hayDatos) { return <Cargando /> }
 
@@ -98,7 +98,7 @@ const AdministrarComanda = (props) => {
   )
 }
 
-const ItemPedido = ({pedido}) =>
+const ItemDonacion = ({donacion}) =>
   <ListItem>
     <Grid>
       <Col>
@@ -111,7 +111,7 @@ const ItemPedido = ({pedido}) =>
       </Col>
       <Col>
         <Button onPress={ () => alAceptar(combo) }>Producir</Button>}
-        <Text>{pedido.hora}</Text>
+        <Text>{donacion.hora}</Text>
       </Col>
     </Grid>
   </ListItem>
@@ -134,19 +134,19 @@ const ItemComanda = ({item: {combo, estados}, alAceptar, alDisponer}) =>
           <CardItem>
             <Grid>
               <Col>
-                <Text style={Estilo.pedido.descripcion}>Esperando</Text>
-                <Text style={Estilo.pedido.cantidad}>{estados[Estados.pedido] || ""}</Text>
+                <Text style={Estilo.donacion.descripcion}>Esperando</Text>
+                <Text style={Estilo.donacion.cantidad}>{estados[Estados.donado] || ""}</Text>
               </Col>
               <Col>
-                {estados[Estados.pedido] && <Button onPress={ () => alAceptar(combo) }>Producir</Button>}
+                {estados[Estados.donado] && <Button onPress={ () => alAceptar(combo) }>Producir</Button>}
               </Col>
             </Grid>
           </CardItem>
           <CardItem>
             <Grid>
               <Col>
-                <Text style={Estilo.pedido.descripcion}>Cocinado</Text>
-                <Text style={Estilo.pedido.cantidad}>{estados[Estados.aceptado] || ""}</Text>
+                <Text style={Estilo.donacion.descripcion}>Cocinado</Text>
+                <Text style={Estilo.donacion.cantidad}>{estados[Estados.aceptado] || ""}</Text>
               </Col>
               <Col>
                 {estados[Estados.aceptado] && <Button onPress={ () => alDisponer(combo)}>Entregar</Button>}
@@ -154,8 +154,8 @@ const ItemComanda = ({item: {combo, estados}, alAceptar, alDisponer}) =>
             </Grid>
           </CardItem>
           <CardItem>
-            <Text style={Estilo.pedido.descripcion}>Disponible</Text>
-            <Text style={Estilo.pedido.cantidad}>{estados[Estados.disponible] || ""}</Text>
+            <Text style={Estilo.donacion.descripcion}>Disponible</Text>
+            <Text style={Estilo.donacion.cantidad}>{estados[Estados.disponible] || ""}</Text>
           </CardItem>
         </Card>
       </Col>
@@ -177,25 +177,25 @@ const ItemComanda1 = ({item: {combo, estados}, alAceptar, alDisponer}) =>
       <Col>
         <Row>
           <Col>
-            <Text style={Estilo.pedido.descripcion}>Esperando</Text>
-            <Text style={Estilo.pedido.cantidad}>{estados[Estados.pedido] || ""}</Text>
+            <Text style={Estilo.donacion.descripcion}>Esperando</Text>
+            <Text style={Estilo.donacion.cantidad}>{estados[Estados.donado] || ""}</Text>
           </Col>
           <Col>
-            {estados[Estados.pedido] && <Button onPress={ () => alAceptar(combo) }>Producir</Button>}
+            {estados[Estados.donado] && <Button onPress={ () => alAceptar(combo) }>Producir</Button>}
           </Col>
         </Row>
         <Row>
           <Col>
-            <Text style={Estilo.pedido.descripcion}>Cocinado</Text>
-            <Text style={Estilo.pedido.cantidad}>{estados[Estados.aceptado] || ""}</Text>
+            <Text style={Estilo.donacion.descripcion}>Cocinado</Text>
+            <Text style={Estilo.donacion.cantidad}>{estados[Estados.aceptado] || ""}</Text>
           </Col>
           <Col>
             {estados[Estados.aceptado] && <Button onPress={ () => alDisponer(combo)}>Entregar</Button>}
           </Col>
         </Row>
         <Row>
-          <Text style={Estilo.pedido.descripcion}>Disponible</Text>
-          <Text style={Estilo.pedido.cantidad}>{estados[Estados.disponible] || ""}</Text>
+          <Text style={Estilo.donacion.descripcion}>Disponible</Text>
+          <Text style={Estilo.donacion.cantidad}>{estados[Estados.disponible] || ""}</Text>
         </Row>
       </Col>
     </Grid>

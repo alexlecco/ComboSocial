@@ -16,12 +16,12 @@ import { IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator } from 'rn-v
 
 import { Paginas, Pagina, Contenido } from './../componentes/pagina';
 
-import { Usuario, Pedido, Combo, Estados } from './../datos'
+import { Usuario, Donacion, Combo, Estados } from './../datos'
 import { Estilos, Estilo, Pantalla } from './../styles';
 
 import { MostrarCombo } from './Combo';
 
-class PaginaPedido extends Component {
+class PaginaDonacion extends Component {
   render(){
     const { combos, alElegir, alSalir, usuario, presentacion } = this.props
     return (
@@ -67,4 +67,4 @@ class PaginaProducto extends Component {
   }
 }
 
-export { PaginaPedido }
+export { PaginaDonacion }

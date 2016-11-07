@@ -7,17 +7,17 @@ import { Container, Header, Title, Content, Grid, Col, Row, List, ListItem, Card
 
 import { Pagina, Contenido, Cargando } from './../componentes/pagina';
 
-import { Usuario, Pedido, Combo, Estados } from './../datos'
+import { Usuario, Donacion, Combo, Estados } from './../datos'
 import { Estilos, Estilo, Pantalla } from './../styles';
 
 class Propietario extends Component {
     constructor(props){
       super(props)
 
-      this.state = { usuario: false, platos: false, pedidos: false }
+      this.state = { usuario: false, platos: false, donaciones: false }
       Usuario.registrar(this)
       Combo.registrar(this)
-      Pedido.registrar(this)
+      Donacion.registrar(this)
     }
 
     componentDidMount() {
@@ -26,7 +26,7 @@ class Propietario extends Component {
       Usuario.observar(usuario => usuario.esCliente || usuario.esCocinero )
 
       Combo.observar( plato => plato.activo )
-      Pedido.observar( pedido => pedido.enEntrega(cadete) )
+      Donacion.observar( donacion => donacion.enEntrega(cadete) )
     }
 
     componentWillUnmount(){
@@ -35,40 +35,40 @@ class Propietario extends Component {
       Usuario.detener()
 
       Combo.detener()
-      Pedido.detener()
+      Donacion.detener()
     }
 
-    alElegir = (pedido) => {
+    alElegir = (donacion) => {
       const cadete = this.props.id
-      if(pedido.estado == Estados.disponible){
-        pedido.retirar(cadete)
+      if(donacion.estado == Estados.disponible){
+        donacion.retirar(cadete)
       } else {
-        pedido.entregar()
+        donacion.entregar()
       }
     }
 
     render(){
       const cadete = this.props.id
 
-      const {usuario, platos, pedidos, usuarios}  = this.state
-      const hayDatos  = usuario && platos && pedidos
+      const {usuario, platos, donaciones, usuarios}  = this.state
+      const hayDatos  = usuario && platos && donaciones
 
       if(!hayDatos) { return <Cargando /> }
 
-      const pedido  = pedidos[0]
-      if(!pedido){ return <Libre {...this.props} />}
+      const donacion  = donaciones[0]
+      if(!donacion){ return <Libre {...this.props} />}
 
-      const plato    = platos.find(plato => plato.id === pedido.plato)
-      const empleado = usuarios.find(usuario => usuario.id === pedido.empleado)
-      const cliente  = usuarios.find(usuario => usuario.id === pedido.cliente)
+      const plato    = platos.find(plato => plato.id === donacion.plato)
+      const empleado = usuarios.find(usuario => usuario.id === donacion.empleado)
+      const cliente  = usuarios.find(usuario => usuario.id === donacion.cliente)
 
-      return <Envio {...this.props} pedido={pedido} plato={plato} empleado={empleado} cliente={cliente} alElegir={ this.alElegir } />
+      return <Envio {...this.props} donacion={donacion} plato={plato} empleado={empleado} cliente={cliente} alElegir={ this.alElegir } />
     }
   }
 
   const Envio = (props) => {
-    const { pedido, plato, cliente, empleado, alElegir, alSalir } = props
-    const accion = pedido.estado === Estados.disponible ? 'Retirar ya!' : 'Entregar ya!'
+    const { donacion, plato, cliente, empleado, alElegir, alSalir } = props
+    const accion = donacion.estado === Estados.disponible ? 'Retirar ya!' : 'Entregar ya!'
 
     return (
       <Pagina titulo={"Envio"} alSalir={() => alSalir()}>
@@ -79,10 +79,10 @@ class Propietario extends Component {
         <View style={{marginTop: Pantalla.separacion}}>
           <Text style={Estilo.plato.descripcion}> {plato.descripcion} </Text>
           <Text style={Estilo.plato.detalle}> {plato.detalle} </Text>
-          {pedido.estado === Estados.disponible && <Cocinero {...props} />}
-          {pedido.estado === Estados.retirado   && <Cliente  {...props} />}
+          {donacion.estado === Estados.disponible && <Cocinero {...props} />}
+          {donacion.estado === Estados.retirado   && <Cliente  {...props} />}
         </View>
-        <Button block style={Pantalla.accion} onPress={ () => alElegir(pedido) }><Text>{accion}</Text></Button>
+        <Button block style={Pantalla.accion} onPress={ () => alElegir(donacion) }><Text>{accion}</Text></Button>
         </Contenido>
       </Pagina>
     )
@@ -93,25 +93,25 @@ class Propietario extends Component {
       <Text style={[Estilo.plato.precio, Estilo.plato.ubicarPrecio]}>${precio}</Text>
     </View>
 
-  const Cocinero = ({pedido, empleado}) =>
+  const Cocinero = ({donacion, empleado}) =>
     <Grid>
       <Col><Thumbnail source={{uri: empleado.foto}} size={100} /></Col>
       <Col>
-        <Text style={Estilo.pedido.descripcion}> Cocinero: </Text>
-        <Text style={Estilo.pedido.cantidad}>{empleado.nombre}</Text>
-        <Text style={Estilo.pedido.descripcion}> Dirección: </Text>
-        <Text style={Estilo.pedido.cantidad}>{empleado.domicilio}</Text>
+        <Text style={Estilo.donacion.descripcion}> Cocinero: </Text>
+        <Text style={Estilo.donacion.cantidad}>{empleado.nombre}</Text>
+        <Text style={Estilo.donacion.descripcion}> Dirección: </Text>
+        <Text style={Estilo.donacion.cantidad}>{empleado.domicilio}</Text>
       </Col>
     </Grid>
 
-  const Cliente = ({pedido, cliente}) =>
+  const Cliente = ({donacion, cliente}) =>
     <Grid>
       <Col><Thumbnail source={{uri: cliente.foto}} size={100} /></Col>
       <Col>
-        <Text style={Estilo.pedido.descripcion}> Cliente: </Text>
-        <Text style={Estilo.pedido.cantidad}>{cliente.nombre}</Text>
-        <Text style={Estilo.pedido.descripcion}> Dirección: </Text>
-        <Text style={Estilo.pedido.cantidad}>{cliente.domicilio}</Text>
+        <Text style={Estilo.donacion.descripcion}> Cliente: </Text>
+        <Text style={Estilo.donacion.cantidad}>{cliente.nombre}</Text>
+        <Text style={Estilo.donacion.descripcion}> Dirección: </Text>
+        <Text style={Estilo.donacion.cantidad}>{cliente.domicilio}</Text>
       </Col>
     </Grid>
 
@@ -119,7 +119,7 @@ class Propietario extends Component {
 
   const Libre = (props) =>
     <Pagina titulo={"Envio"} alSalir={() => props.alSalir()}>
-      <Text style={{fontSize: 20, alignSelf: 'center'}}>No hay pedidos</Text>
+      <Text style={{fontSize: 20, alignSelf: 'center'}}>No hay donaciones</Text>
     </Pagina>
 
 export { Propietario };
