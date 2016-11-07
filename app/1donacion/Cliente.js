@@ -123,12 +123,10 @@ class Pago extends Component {
     return (
       <View style={{alignItems:'center'}}>
         <Text style={{fontSize: 24, color, fontWeight: 'bold', marginTop:10}}>{total}</Text>
-        <Text style={{fontSize: 10, color: 'gray'}}>{detalle}</Text>
+        <Text style={{fontSize: 10, color: 'gray'}}> {detalle} </Text>
       </View>
     )
   }
 }
-
-console.log("IMPORT: Cliente v.3")
 
 export { Cliente }

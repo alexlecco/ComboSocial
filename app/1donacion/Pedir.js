@@ -1,12 +1,6 @@
 'use strict';
 
 import React, { Component } from 'react';
-// import { Image } from 'react-native';
-
-// import { Container, Header, Title, Content, Footer, Button, Text, View, Spinner, Icon } from 'native-base';
-//
-// import StarRating from 'react-native-star-rating';
-// import { IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator } from 'rn-viewpager';
 
 import { Paginas, Pagina, Contenido } from './../componentes/pagina';
 
@@ -54,10 +48,10 @@ class PaginaPresentacion extends Component {
       <Contenido>
         <View style={{height: 140, backgroundColor: 'powderblue'}} />
         <View style={{flex: 1, backgroundColor: 'skyblue', alignItems: 'center'}}>
-          <Text style={{fontSize:30, marginTop:20, height:100,color:'red'}}>El combo del dia</Text>
+          <Text style={{fontSize:30, marginTop:20, height:100,color:'red'}}> Combo Social </Text>
         </View>
         <View style={{height: 50, backgroundColor: 'steelblue', alignItems:'center'}}>
-          <Text style={{fontSize: 20}}>Tu combo en 30 minutos o gratis</Text>
+          <Text style={{fontSize: 20}}> Elegí tu combo y ayudá </Text>
          </View>
       </Contenido>
     )
@@ -76,7 +70,7 @@ class PaginaProducto extends Component {
             <Text style={Estilo.combo.descripcion}> {combo.descripcion} </Text>
             <Text style={Estilo.combo.detalle}> {combo.detalle} </Text>
         </View>
-        <Button onPress={() => alElegir()} style={Pantalla.accion}> ¡Pedir Ya! </Button>
+        <Button onPress={() => alElegir()} style={Pantalla.accion}> Elegir </Button>
       </Contenido>
     )
   }
@@ -84,7 +78,7 @@ class PaginaProducto extends Component {
 
 const Precio = ({precio}) =>
   <View style={Estilo.combo.ubicarPrecio}>
-    <Text style={Estilo.combo.precio}>u$s{precio}</Text>
+    <Text style={Estilo.combo.precio}>${precio}</Text>
   </View>
 
 

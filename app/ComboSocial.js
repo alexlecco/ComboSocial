@@ -54,15 +54,12 @@ export default class ComboSocial extends Component {
   }
 
   leerUsuario(){
-    console.log("PROBANDO leerUsuario");
-
     AsyncStorage.getItem('@usuario:id')
       .then( valor => Usuario.leer(valor) )
       .catch( error => console.log("ERROR leerUsuario", error) )
   }
 
   escribirUsuario(id){
-    console.log("ESCRIBIR USUARIO:ID ", id)
     AsyncStorage.setItem('@usuario:id', id)
       .then( () => console.log("USUARIO GUARDADO") )
       .catch( error => console.log("USUARIO CON ERROR", error))
@@ -86,9 +83,9 @@ export default class ComboSocial extends Component {
 
     if(!usuario) { return <ElegirUsuario usuarios={usuarios} alElegir={ usuario => this.alIngresar(usuario)} />}
 
-    if(usuario.esCliente ) { return <Cliente  id={usuario.id} alSalir={ () => this.alSalir() }/> }
-    if(usuario.esEmpleado) { return <Empleado id={usuario.id} alSalir={ () => this.alSalir() }/> }
-    if(usuario.esPropietario)   { return <Propietario   id={usuario.id} alSalir={ () => this.alSalir() }/> }
+    if(usuario.esCliente )    { return <Cliente     id={usuario.id} alSalir={ () => this.alSalir() }/> }
+    if(usuario.esEmpleado)    { return <Empleado    id={usuario.id} alSalir={ () => this.alSalir() }/> }
+    if(usuario.esPropietario) { return <Propietario id={usuario.id} alSalir={ () => this.alSalir() }/> }
   }
 }
 
@@ -96,7 +93,6 @@ const ejecutarAccion = (accion) => {
   if(accion==0){ Datos.cargarCombos() }
   if(accion==1){
     Datos.cargarUsuarios();
-    console.log("PROBANDO getItem");
     AsyncStorage.getItem('@usuario:id')
       .then( valor => console.log("OK Probando getItem : ", valor) )
       .catch( error => console.log("ERROR Probando getItem", error) )
@@ -131,7 +127,7 @@ const ElegirUsuario = (props) => {
 const ListarUsuarios = (props) => {
   const { titulo, usuarios } = props
   return (
-   <View style={{}}>
+    <View style={{}}>
       <Text style={{ height: 20, marginLeft:10, marginTop:10 }}>{titulo}</Text>
       <List dataArray={usuarios}
             renderRow={(usuario) =>
@@ -142,6 +138,6 @@ const ListarUsuarios = (props) => {
               </ListItem>
             }>
       </List>
-   </View>
- )
+    </View>
+  )
 }
