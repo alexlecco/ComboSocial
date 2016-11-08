@@ -44,12 +44,11 @@ class PaginaPresentacion extends Component {
     return (
       <Contenido>
         <View style={{flex: 1, backgroundColor: 'skyblue', alignItems: 'center'}}>
-          <Text style={{fontSize:30, marginTop:20, height:100,color:'red'}}> </Text>
-          <Image style={{ resizeMode: 'cover' }} source={{uri: 'https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/icono.png?alt=media', width: 200, height: 200}} />
+          <Image style={{ resizeMode: 'cover' }} source={{uri: 'https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/icono.png?alt=media', width: 250, height: 250}} />
         </View>
         <View style={{height: 50, backgroundColor: 'steelblue', alignItems:'center'}}>
-          <Text style={{fontSize: 20}}> Elegí tu combo y ayudá </Text>
-         </View>
+          <Text style={{fontSize: 20, color: 'white'}}> Elegí tu combo y ayudá </Text>
+        </View>
       </Contenido>
     )
   }

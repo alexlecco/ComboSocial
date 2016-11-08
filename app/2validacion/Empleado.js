@@ -62,9 +62,9 @@ class Empleado extends Component {
     const {donaciones, combos, usuarios} = this.state
 
     return donaciones.sort(Donacion.ordenCronologico).map( donacion => ({
-          cliente: usuarios.find( cliente => cliente.id === donacion.cliente ),
-          combo:   combos.find( combo => combo.id === donacion.combo ),
-          donacion:  donacion })
+          cliente:  usuarios.find( cliente => cliente.id === donacion.cliente ),
+          combo:    combos.find( combo => combo.id === donacion.combo ),
+          donacion: donacion })
         )
   }
 
@@ -84,7 +84,7 @@ const AdministrarComanda = (props) => {
   return (
     <Container>
       <Header>
-        <Title>Comanda para [{empleado.id}]</Title>
+        <Title> Libreta de empleado: {empleado.id}</Title>
         <Button transparent onPress={ () => alSalir() } ><Icon name='ios-home' /></Button>
       </Header>
       <Content style={{flex:1}}>
@@ -115,9 +115,9 @@ const ItemDonacion = ({item: {cliente, combo, donacion}, alAceptar, alDisponer})
             </Col>
             <Col>
               <View style={Item.centrar}>
-                {donacion.estado === Estados.donado && <Button onPress={ () => alAceptar(combo) }> Producir </Button>}
-                {donacion.estado === Estados.aceptado && <Button success onPress={ () => alDisponer(combo)}> Entregar </Button>}
-                {donacion.estado === Estados.entregado && <Text> Esperando valoración... </Text>}
+                {donacion.estado === Estados.donado && <Button onPress={ () => alAceptar(combo) }> Tomar </Button>}
+                {donacion.estado === Estados.aceptado && <Button success onPress={ () => alDisponer(combo)}> Validar </Button>}
+                {donacion.estado === Estados.entregado && <Text> El combo fue validado </Text>}
               </View>
             </Col>
           </Grid>

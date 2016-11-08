@@ -24,9 +24,16 @@
     com004: {
       id: "com004",
       descripcion: "4 milanesas + 2 gaseosas",
-      precio: 300,
+      precio: 290,
       contribución: 10,
-      activo: true,
+      activo: false,
+    },
+    com005: {
+      id: "com005",
+      descripcion: "2 Pizzas + 2 gaseosas",
+      precio: 230,
+      contribución: 6,
+      activo: false,
     },
   },
 

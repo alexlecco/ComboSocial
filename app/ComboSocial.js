@@ -11,8 +11,6 @@ import {
   Button, Text, View,
 } from 'native-base';
 
-// var DigitsAuthenticateButton = require('./DigitsAuthenticateButton');
-
 import { Acciones } from './componentes/acciones.js';
 import { Pagina, Contenido, Cargando } from './componentes/pagina';
 import { Estilos, Estilo, Pantalla } from './styles';

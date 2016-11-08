@@ -37,22 +37,20 @@ const Accion = ({donacion}) => {
     case Estados.donado:
         return (<Button block danger style={Pantalla.accion} onPress={ () => donacion.cancelar() }><Icon name='ios-close-circle' /> Cancelar!</Button>)
     case Estados.entregado:
-        return (<Button block disabled={!donacion.valoracion} style={Pantalla.accion} onPress={ () => donacion.valorar() }><Icon name='ios-checkmark' />Valorar!</Button>);
+        return (<Button block style={Pantalla.accion} onPress={ () => donacion.valorar() }><Icon name='ios-checkmark' /> Aceptar! </Button>);
     default:
         return null;
   }
 }
 
 const Mostrar = ({texto, demora, faltante, completo}) => {
-  const mensajeRapido = completo ? "Misión cumplida. Nos sobró "+humanizeHora(faltante) : "Te lo entregamos en "+humanizeHora(faltante)
+  const mensajeRapido = completo ? "Misión cumplida. Nos sobró " + humanizeHora(faltante) : "Te lo entregamos en "+humanizeHora(faltante)
   const mensajeLento  = (completo ? "Fallamos por " + humanizeHora(-faltante) : "Estamos " + humanizeHora(-faltante) +" atrazados") + " pero..."
   const ofertaRapido  = completo ? "" : "o comes gratis"
   const ofertaLento   = "¡HOY " + (completo ? "COMISTE" : "COMES") +" GRATIS!"
   return (
-    <View style={{position:'absolute', bottom: 150, left:20, right: 20}}>
-      <Text style={{fontSize: 20}}>{texto} {humanizeHora(demora)}</Text>
-      <Text style={{color: 'red'}}>{faltante > 0 ? mensajeRapido : mensajeLento}</Text>
-      <Text>{faltante > 0 ? ofertaRapido : ofertaLento}</Text>
+    <View style={{position:'absolute', bottom: 70, left:20, right: 20}}>
+      <Text style={{fontSize: 20}}>{texto}</Text>
     </View>
   )
 }
@@ -63,17 +61,16 @@ const Estado = ({donacion}) => {
         return <Mostrar texto={"Donacion en curso"} demora={null} faltante={donacion.tiempoFaltante} />
 
     case Estados.donado:
-        return <Mostrar texto={"Donacion realizado hace"} demora={donacion.tiempoDonacion} faltante={donacion.tiempoFaltante} />
+        return <Mostrar texto={"Tu donación fue registrada. cuando te cobren será validada."} demora={donacion.tiempoDonacion} faltante={donacion.tiempoFaltante} />
 
     case Estados.aceptado:
-        return <Mostrar texto={"Combo en la cocina"} demora={donacion.tiempoCoccion} faltante={donacion.tiempoFaltante} />
+        return <Mostrar texto={"Estamos preaparando tu combo."} demora={donacion.tiempoCoccion} faltante={donacion.tiempoFaltante} />
 
     case Estados.entregado:
         return (
             <View>
-              <Mostrar texto="Combo entregado hace " demora={donacion.tiempoValoracion} faltante={donacion.tiempoFaltante} completo={true}/>
+              <Mostrar texto="Tu donacion fué registrada. Muchas gracias por ayudar. " demora={donacion.tiempoValoracion} faltante={donacion.tiempoFaltante} completo={true}/>
               <View style={{position:'absolute', bottom: 100, left:20, right: 20}}>
-                <StarRating rating={donacion.valoracion} selectedStar={ valoracion => donacion.ponerValoracion(valoracion)} />
               </View>
             </View>
         )
@@ -98,7 +95,7 @@ class PaginaSeguimiento extends Component {
     const { donacion, combo, alSalir, usuario } = this.props
     const { cadete, estado, cliente } = donacion
     return (
-      <Pagina titulo="Seguimiento.3" alSalir={() => alSalir() }>
+      <Pagina titulo="Seguimiento de donacion" alSalir={() => alSalir() }>
         <Contenido>
           <MostrarCombo combo={combo} compacto={esCompacto(Platform)} />
           <Estado {...this.props} />
