@@ -71,4 +71,21 @@
       conectado: false,
     },
   },
+
+  proyectos: {
+    pro001: {
+      id: "pro001",
+      nombre: "una pc para el comedor don bosco",
+      descripción: "se busca comprar una pc nueva para el taller de computación en el comedor Don Bosco",
+      monto_meta: 10000,
+      monto_actual: 0,
+    },
+    pro002: {
+      id: "pro002",
+      nombre: "una cocina para el comedor don bosco",
+      descripción: "se busca comprar una cocina nueva para el taller de cocina en el comedor Don Bosco",
+      monto_meta: 6900,
+      monto_actual: 0,
+    },
+  },
 }

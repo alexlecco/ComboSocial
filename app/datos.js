@@ -44,6 +44,11 @@ export class Datos {
       raiz.child('combos').set(datos.combos)
     }
 
+    static cargarProyectos(){
+      const datos = require('./datos.json')
+      raiz.child('proyectos').set(datos.proyectos)
+    }
+
     static cargarUsuarios(){
       const datos = require('./datos.json')
       raiz.child('usuarios').set(datos.usuarios)

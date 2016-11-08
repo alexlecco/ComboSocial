@@ -97,6 +97,7 @@ const ejecutarAccion = (accion) => {
       // .done()
   }
   if(accion==2){ Datos.borrarDonaciones() }
+  if(accion==3){ Datos.cargarProyectos() }
 }
 
 const ElegirUsuario = (props) => {
@@ -116,7 +117,7 @@ const ElegirUsuario = (props) => {
         <ListarUsuarios titulo="Propietarios" {...props} usuarios={propietarios} />
       </Content>
       <Footer>
-        <Acciones titulos={["+ Combos", "+ Usuarios", "- Donaciones"]} alElegir={(nroAccion) => ejecutarAccion(nroAccion)} />
+        <Acciones titulos={["+ Combos", "+ Usuarios", "- Donaciones", "+ Proyectos"]} alElegir={(nroAccion) => ejecutarAccion(nroAccion)} />
       </Footer>
     </Container>
   )

@@ -24,7 +24,6 @@ class PaginaConfirmar extends Component {
   render(){
     const { donacion, combo,  alCancelar, alConfirmar, alSalir, usuario, lugar } = this.props
     const { cadete, estado, cliente } = donacion
-    console.log("PaginasConfirmar", typeof(donacion), donacion.entregarEn)
     return (
       <Pagina titulo="Confirmar" alSalir={() => alSalir() }>
         <Contenido>
