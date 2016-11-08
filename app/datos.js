@@ -9,7 +9,7 @@ const dbconfig = {
   storageBucket: "combo-social.appspot.com",
 };
 
-export const ListaEstados = 'pendiente | donado | aceptado | disponible | retirado | entregado | recibido | cancelado'.split(' | ')
+export const ListaEstados = 'pendiente | iniciada | tomada | disponible | retirado | cobrada | finalizada | cancelada'.split(' | ')
 export const Estados      = ListaEstados.reduce( (h, x) => Object.assign(h, {[x]:x}), {} )
 
 const base = firebase.initializeApp(dbconfig);
@@ -171,8 +171,8 @@ export class Donacion extends Registro {
     static get EsperaMaxima(){ return 5 * 60 } // 30 minutos o GRATIS
 
     static ordenCronologico(a, b) {
-      const horaA = a.horas[Estados.donado]
-      const horaB = b.horas[Estados.donado]
+      const horaA = a.horas[Estados.iniciada]
+      const horaB = b.horas[Estados.iniciada]
       return horaA && horaB ? horaA - horaB : 0
     }
 
@@ -189,19 +189,19 @@ export class Donacion extends Registro {
     }
 
     get tiempoDonacion(){
-      return this.tiempoEntre(Estados.donado, Estados.recibido)
+      return this.tiempoEntre(Estados.iniciada, Estados.finalizada)
     }
 
     get tiempoValoracion(){
-      return this.tiempoEntre(Estados.entregado, Estados.recibido)
+      return this.tiempoEntre(Estados.cobrada, Estados.finalizada)
     }
 
     get tiempoCoccion(){
-      return this.tiempoEntre(Estados.aceptado, Estados.entregado)
+      return this.tiempoEntre(Estados.tomada, Estados.cobrada)
     }
 
     get tiempoFaltante(){
-      return Donacion.EsperaMaxima - this.tiempoEntre(Estados.donado, Estados.entregado)
+      return Donacion.EsperaMaxima - this.tiempoEntre(Estados.iniciada, Estados.cobrada)
     }
 
     // get salio(){
@@ -210,19 +210,19 @@ export class Donacion extends Registro {
     // }
     //
     // get duracion(){
-    //   const donado    = this.horas[Estados.donado]
-    //   const entregado = this.horas[Estados.entregado]
-    //   return donado && entregado ? (entregado - donado) / 1000 : null
+    //   const iniciada    = this.horas[Estados.iniciada]
+    //   const cobrada = this.horas[Estados.cobrada]
+    //   return iniciada && cobrada ? (cobrada - iniciada) / 1000 : null
     // }
 
-    get activo(){ return this.estado != Estados.cancelado && this.estado != Estados.pendiente && this.estado != Estados.recibido }
+    get activo(){ return this.estado != Estados.cancelada && this.estado != Estados.pendiente && this.estado != Estados.finalizada }
 
     enDonacion(cliente){
-      return this.cliente === cliente && !(this.estado == Estados.recibido || this.estado == Estados.cancelado)
+      return this.cliente === cliente && !(this.estado == Estados.finalizada || this.estado == Estados.cancelada)
     }
 
     enCocina(empleado){
-      return this.estado === Estados.donado || this.empleado === empleado && (this.estado === Estados.aceptado || this.estado === Estados.disponible || this.estado === Estados.entregado)
+      return this.estado === Estados.iniciada || this.empleado === empleado && (this.estado === Estados.tomada || this.estado === Estados.disponible || this.estado === Estados.cobrada)
     }
 
     enEntrega(cadete){
@@ -230,7 +230,7 @@ export class Donacion extends Registro {
     }
 
     get enEspera(){
-      return [Estados.aceptado, Estados.disponible, Estados.retirado].includes(this.estado)
+      return [Estados.tomada, Estados.disponible, Estados.retirado].includes(this.estado)
     }
 
     get combo(){
@@ -239,10 +239,10 @@ export class Donacion extends Registro {
 
     // ACCIONES
     static pedir(cliente, combo){
-      // const donado = new Donacion({cliente: cliente.id, {combos: {combo: {id: combo.id, cantidad: 1}}})
-      const donado = new Donacion({cliente: cliente.id})
-      donado.agregar(combo.id)
-      donado.cambiarEstado(Estados.pendiente)
+      // const iniciada = new Donacion({cliente: cliente.id, {combos: {combo: {id: combo.id, cantidad: 1}}})
+      const iniciada = new Donacion({cliente: cliente.id})
+      iniciada.agregar(combo.id)
+      iniciada.cambiarEstado(Estados.pendiente)
     }
 
     entregarEn(lugar, forzar = true){
@@ -286,7 +286,7 @@ export class Donacion extends Registro {
 
     aceptar(empleado){
       this.empleado = empleado
-      this.cambiarEstado(Estados.aceptado)
+      this.cambiarEstado(Estados.tomada)
     }
 
     disponer(){
@@ -294,11 +294,11 @@ export class Donacion extends Registro {
     }
 
     confirmar(){
-      this.cambiarEstado(Estados.donado)
+      this.cambiarEstado(Estados.iniciada)
     }
 
     cancelar(){
-      this.cambiarEstado(Estados.cancelado)
+      this.cambiarEstado(Estados.cancelada)
     }
 
     retirar(cadete){
@@ -307,7 +307,7 @@ export class Donacion extends Registro {
     }
 
     entregar(){
-      this.cambiarEstado(Estados.entregado)
+      this.cambiarEstado(Estados.cobrada)
     }
 
     get valoracion(){
@@ -322,7 +322,7 @@ export class Donacion extends Registro {
 
     valorar(){
       if(this.valoracion >= 0){
-        this.cambiarEstado(Estados.recibido)
+        this.cambiarEstado(Estados.finalizada)
       }
     }
 

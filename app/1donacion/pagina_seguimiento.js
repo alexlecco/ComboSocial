@@ -34,9 +34,9 @@ const esCompacto = (Platform) => {
 
 const Accion = ({donacion}) => {
   switch (donacion.estado) {
-    case Estados.donado:
+    case Estados.iniciada:
         return (<Button block danger style={Pantalla.accion} onPress={ () => donacion.cancelar() }><Icon name='ios-close-circle' /> Cancelar!</Button>)
-    case Estados.entregado:
+    case Estados.cobrada:
         return (<Button block style={Pantalla.accion} onPress={ () => donacion.valorar() }><Icon name='ios-checkmark' /> Aceptar! </Button>);
     default:
         return null;
@@ -60,13 +60,13 @@ const Estado = ({donacion}) => {
     case Estados.pendiente:
         return <Mostrar texto={"Donacion en curso"} demora={null} faltante={donacion.tiempoFaltante} />
 
-    case Estados.donado:
+    case Estados.iniciada:
         return <Mostrar texto={"Tu donación fue registrada. cuando te cobren será validada."} demora={donacion.tiempoDonacion} faltante={donacion.tiempoFaltante} />
 
-    case Estados.aceptado:
+    case Estados.tomada:
         return <Mostrar texto={"Estamos preaparando tu combo."} demora={donacion.tiempoCoccion} faltante={donacion.tiempoFaltante} />
 
-    case Estados.entregado:
+    case Estados.cobrada:
         return (
             <View>
               <Mostrar texto="Tu donacion fué registrada. Muchas gracias por ayudar. " demora={donacion.tiempoValoracion} faltante={donacion.tiempoFaltante} completo={true}/>
@@ -75,7 +75,7 @@ const Estado = ({donacion}) => {
             </View>
         )
 
-    case Estados.recibido:
+    case Estados.finalizada:
         return <Mostrar texto={"Combo entregado"} demora={donacion.tiempoDonacion} faltante={donacion.tiempoFaltante} />
 
     default:

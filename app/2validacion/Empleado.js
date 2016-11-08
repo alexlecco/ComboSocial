@@ -47,14 +47,14 @@ class Empleado extends Component {
   alAceptar = (combo) => {
       const { donaciones } = this.state
       const empleado = this.props.id
-      const donacion = donaciones.find(donacion => donacion.combo === combo.id && donacion.estado === Estados.donado)
+      const donacion = donaciones.find(donacion => donacion.combo === combo.id && donacion.estado === Estados.iniciada)
       donacion && donacion.aceptar(empleado)
   }
 
   alDisponer = (combo) => {
     const { donaciones } = this.state
     const empleado = this.props.id
-    const donacion = donaciones.find(donacion => donacion.combo === combo.id && donacion.estado === Estados.aceptado && donacion.empleado === empleado)
+    const donacion = donaciones.find(donacion => donacion.combo === combo.id && donacion.estado === Estados.tomada && donacion.empleado === empleado)
     donacion && donacion.entregar()
   }
 
@@ -115,9 +115,9 @@ const ItemDonacion = ({item: {cliente, combo, donacion}, alAceptar, alDisponer})
             </Col>
             <Col>
               <View style={Item.centrar}>
-                {donacion.estado === Estados.donado && <Button onPress={ () => alAceptar(combo) }> Tomar </Button>}
-                {donacion.estado === Estados.aceptado && <Button success onPress={ () => alDisponer(combo)}> Validar </Button>}
-                {donacion.estado === Estados.entregado && <Text> El combo fue validado </Text>}
+                {donacion.estado === Estados.iniciada && <Button onPress={ () => alAceptar(combo) }> Tomar </Button>}
+                {donacion.estado === Estados.tomada && <Button success onPress={ () => alDisponer(combo)}> Cobrar </Button>}
+                {donacion.estado === Estados.cobrada && <Text> La donacion fue cobrada </Text>}
               </View>
             </Col>
           </Grid>
