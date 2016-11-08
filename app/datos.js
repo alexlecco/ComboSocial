@@ -169,7 +169,7 @@ export class Usuario extends Registro {
 
 export class Combo extends Registro {
   get foto(){return `https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/combos%2F${this.id}.jpg?alt=media`}
-  get detalle(){ return `Comprando este combo estás donando $${this.contribución} al comedor Don Bosco`}
+  get detalle(){ return `Comprando este combo estás donando $${this.contribución}`}
 }
 
 export class Donacion extends Registro {
