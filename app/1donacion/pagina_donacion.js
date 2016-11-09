@@ -17,11 +17,12 @@ import { IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator } from 'rn-v
 import { Paginas, Pagina, Contenido } from './../componentes/pagina';
 
 import { Usuario, Donacion, Combo, Estados } from './../datos'
-import { Estilos, Estilo, Pantalla } from './../styles';
+import { Estilos, Estilo, Pantalla, Item } from './../styles';
 
 import { MostrarCombo } from './Combo';
 
 class PaginaDonacion extends Component {
+
   render(){
     const { combos, alElegir, alSalir, usuario, presentacion } = this.props
     return (
@@ -44,7 +45,10 @@ class PaginaPresentacion extends Component {
     return (
       <Contenido>
         <Image source={{uri: 'https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/restaurant.jpg?alt=media'}} style={{flex: 1, alignItems: 'center'}}>
-          <Image style={{ resizeMode: 'cover', backgroundColor: '#ffffff70', margin: 20, width: 300 }} source={{uri: 'https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/icono.png?alt=media', width: 250, height: 250}} />
+          <Image style={{ resizeMode: 'cover', backgroundColor: '#ffffff99', margin: 20, width: 300 }} source={{uri: 'https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/icono.png?alt=media', width: 250, height: 250}} />
+          <Button success style={{ justifyContent: 'center', alignSelf: 'center', top: 50 }}
+                  onPress={() => {console.log("conocenos")}}> Conocenos
+          </Button>
         </Image>
         <View style={{height: 50, backgroundColor: 'steelblue', alignItems:'center'}}>
           <Text style={{fontSize: 20, color: 'white', top: 10}}> Elegí tu combo y ayudá </Text>
