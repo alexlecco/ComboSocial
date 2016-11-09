@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-
-import { Container, Header, Title, Content, Button, View, Icon, Spinner } from 'native-base';
+import { Image } from 'react-native';
+import {
+  Container, Header, Title,
+  Content, Button, View,
+  Icon, Spinner,
+} from 'native-base';
 import { IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator } from 'rn-viewpager';
 
-import { Pantalla } from './../styles';
+import { Pantalla, Item, Combo} from './../styles';
 
 const Pagina = ({titulo, alSalir, children}) =>
   <Container>
@@ -21,6 +25,7 @@ const Contenido = ({children}) =>
 
 const Cargando = ({color}) =>
   <View style={{flex:1, alignItems: 'stretch'}}>
+    <Image style={{ marginTop: 100, width: 350, height: 100, flex: 1, justifyContent: 'center', alignSelf: 'center',}} source={{uri: 'https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/icono.png?alt=media', width: 250, height: 250}} />
     <Spinner style={{flex:1}} color={color} />
   </View>
 

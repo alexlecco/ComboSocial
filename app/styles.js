@@ -3,7 +3,6 @@
 import React, {StyleSheet} from 'react-native';
 
 import { Pantalla } from './pantalla';
-console.log("STYLE > Pantalla:", Pantalla)
 
 const Estilos = StyleSheet.create({
 
@@ -139,4 +138,4 @@ const Usuario = StyleSheet.create({
 });
 
 const Estilo = {combo: Combo, donacion: Donacion, usuario: Usuario};
-export {Estilos, Estilo, Pantalla, Item};
+export {Estilos, Estilo, Pantalla, Item, Combo};

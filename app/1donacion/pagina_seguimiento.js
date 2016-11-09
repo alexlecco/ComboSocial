@@ -64,7 +64,7 @@ const Estado = ({donacion}) => {
         return <Mostrar texto={"Tu donación fue registrada. cuando te cobren será validada."} demora={donacion.tiempoDonacion} faltante={donacion.tiempoFaltante} />
 
     case Estados.tomada:
-        return <Mostrar texto={"Estamos preaparando tu combo."} demora={donacion.tiempoCoccion} faltante={donacion.tiempoFaltante} />
+        return <Mostrar texto={"Estamos preparando tu combo."} demora={donacion.tiempoCoccion} faltante={donacion.tiempoFaltante} />
 
     case Estados.cobrada:
         return (
