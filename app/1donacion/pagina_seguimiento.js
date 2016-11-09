@@ -37,7 +37,7 @@ const Accion = ({donacion}) => {
     case Estados.iniciada:
         return (<Button block danger style={Pantalla.accion} onPress={ () => donacion.cancelar() }><Icon name='ios-close-circle' /> Cancelar!</Button>)
     case Estados.cobrada:
-        return (<Button block style={Pantalla.accion} onPress={ () => donacion.valorar() }><Icon name='ios-checkmark' /> Aceptar! </Button>);
+        return (<Button block style={Pantalla.accion} onPress={ () => donacion.valorar() }><Icon name='ios-checkmark' /> Volver </Button>);
     default:
         return null;
   }

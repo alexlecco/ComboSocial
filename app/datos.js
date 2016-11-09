@@ -250,11 +250,11 @@ export class Donacion extends Registro {
       iniciada.cambiarEstado(Estados.pendiente)
     }
 
-    entregarEn(lugar, forzar = true){
+    donarEn(proyecto, forzar = true){
       if(forzar){
-        this.lugar = lugar
+        this.proyecto = proyecto
       } else {
-        this.lugar = (this.lugar === lugar ? null : lugar)
+        this.proyecto = (this.proyecto === proyecto ? null : proyecto)
       }
       this.escribir()
     }

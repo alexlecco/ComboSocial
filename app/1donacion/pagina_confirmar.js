@@ -30,8 +30,18 @@ class PaginaConfirmar extends Component {
           <MostrarCombo combo={combo} compacto={true}/>
           <List>
             <ListItem>
-              <Text style={{fontWeight:'bold'}}> ¿Estás seguro que querés este combo? </Text>
+              <Text style={{fontWeight:'bold', textAlign: 'center'}}> ¿A que proyecto querés contribuir con tu combo? </Text>
             </ListItem>
+
+            <ListItem button onPress={ () => donacion.donarEn('pro001', false) }>
+              <Radio selected={ donacion.proyecto === "pro001" } onPress={ () => donacion.donarEn('pro001', false) } />
+              <Text> una pc para el comedor don bosco </Text>
+            </ListItem>
+            <ListItem button onPress={ () => donacion.donarEn('pro002', false) }>
+              <Radio selected={ donacion.proyecto === "pro002" } onPress={ () => donacion.donarEn('pro002', false) } />
+              <Text> una cocina para el comedor don bosco </Text>
+            </ListItem>
+
           </List>
           <Button block danger style={Pantalla.accion1} onPress={ () => alCancelar() }><Icon name='ios-close-circle' /> Cancelar!</Button>
           <Button block style={Pantalla.accion2} onPress={ () => alConfirmar() }><Icon name='ios-checkmark' /> Confirmar!</Button>
