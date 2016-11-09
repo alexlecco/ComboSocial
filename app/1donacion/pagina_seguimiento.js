@@ -50,7 +50,7 @@ const Mostrar = ({texto, demora, faltante, completo}) => {
   const ofertaLento   = "¡HOY " + (completo ? "COMISTE" : "COMES") +" GRATIS!"
   return (
     <View style={{position:'absolute', bottom: 70, left:20, right: 20}}>
-      <Text style={{fontSize: 20}}>{texto}</Text>
+      <Text style={{fontSize: 20}}>{ texto }</Text>
     </View>
   )
 }
@@ -61,7 +61,7 @@ const Estado = ({donacion}) => {
         return <Mostrar texto={"Donacion en curso"} demora={null} faltante={donacion.tiempoFaltante} />
 
     case Estados.iniciada:
-        return <Mostrar texto={"Tu donación fue registrada. cuando te cobren será validada."} demora={donacion.tiempoDonacion} faltante={donacion.tiempoFaltante} />
+        return <Mostrar texto={"Tu donación fue registrada. cuando te cobremos será validada."} demora={donacion.tiempoDonacion} faltante={donacion.tiempoFaltante} />
 
     case Estados.tomada:
         return <Mostrar texto={"Estamos preparando tu combo."} demora={donacion.tiempoCoccion} faltante={donacion.tiempoFaltante} />
