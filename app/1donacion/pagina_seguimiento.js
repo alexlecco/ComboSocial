@@ -8,8 +8,7 @@ import { Image, Platform } from 'react-native';
 import {
   Container, Header, Title, Content,
   Button, Text, View,
-  Icon,
-  Grid, Col, Row,
+  Icon, Grid, Col, Row,
 } from 'native-base';
 
 import StarRating from 'react-native-star-rating';
@@ -70,8 +69,8 @@ const Estado = ({donacion}) => {
         return (
             <View>
               <Mostrar texto="Tu donacion fué registrada. Muchas gracias por ayudar. " demora={donacion.tiempoValoracion} faltante={donacion.tiempoFaltante} completo={true}/>
-              <View style={{position:'absolute', bottom: 100, left:20, right: 20}}>
-              </View>
+              <Button block style={{backgroundColor: '#3b5998'}}> Compartilo en Facebook </Button>
+              <Button block style={{backgroundColor: '#dd4b39'}} > Compartilo en Google + </Button>
             </View>
         )
 
@@ -98,7 +97,7 @@ class PaginaSeguimiento extends Component {
       <Pagina titulo="Seguimiento de donacion" alSalir={() => alSalir() }>
         <Contenido>
           <MostrarCombo combo={combo} compacto={esCompacto(Platform)} />
-          <Estado {...this.props} />
+          <Estado {...this.props}  />
           <Accion {...this.props} />
         </Contenido>
       </Pagina>
