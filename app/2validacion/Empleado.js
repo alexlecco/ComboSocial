@@ -12,18 +12,19 @@ import {
 } from 'native-base';
 
 import { Pagina, Contenido, Cargando } from './../componentes/pagina';
-import { Usuario, Donacion, Combo, Estados } from './../datos'
+import { Usuario, Donacion, Combo, Estados, Proyecto } from './../datos'
 import { Estilos, Estilo, Pantalla, Item } from './../styles';
 
 class Empleado extends Component {
   constructor(props){
     super(props)
 
-    this.state = { empleado: false, combos: false, donaciones: false }
+    this.state = { empleado: false, combos: false, donaciones: false, proyectos: false }
 
     Usuario.registrar(this)
     Combo.registrar(this)
     Donacion.registrar(this)
+    Proyecto.registrar(this)
   }
 
   componentDidMount() {
@@ -33,6 +34,7 @@ class Empleado extends Component {
     Usuario.observar(usuario => usuario.esCliente)
     Combo.observar(combo => combo.activo)
     Donacion.observar(donacion => donacion.enCocina(empleado))
+    Proyecto.observar()
   }
 
   componentWillUnmount(){
@@ -42,6 +44,7 @@ class Empleado extends Component {
     Usuario.detener()
     Combo.detener()
     Donacion.detener()
+    Proyecto.detener()
   }
 
   alAceptar = (combo) => {
@@ -52,10 +55,12 @@ class Empleado extends Component {
   }
 
   alDisponer = (combo) => {
-    const { donaciones } = this.state
+    const { donaciones, proyectos } = this.state
     const empleado = this.props.id
     const donacion = donaciones.find(donacion => donacion.combo === combo.id && donacion.estado === Estados.tomada && donacion.empleado === empleado)
+    const proyecto = proyectos.find(proyecto => proyecto.id === donacion.proyecto)
     donacion && donacion.entregar()
+    proyecto && proyecto.actualizarMontoActual(combo)
   }
 
   calcularComandaDetallada(){

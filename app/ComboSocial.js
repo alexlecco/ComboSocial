@@ -14,13 +14,11 @@ import {
 import { Acciones } from './componentes/acciones.js';
 import { Pagina, Contenido, Cargando } from './componentes/pagina';
 import { Estilos, Estilo, Pantalla } from './styles';
-import { Usuario, Datos } from './datos';
+import { Usuario, Proyecto, Datos } from './datos';
 
 import { Cliente }     from './1donacion/Cliente';
 import { Empleado }    from './2validacion/Empleado';
 import { Propietario } from './3control/Propietario';
-
-import { Examples } from '@shoutem/ui';
 
 export default class ComboSocial extends Component {
 
@@ -28,17 +26,20 @@ export default class ComboSocial extends Component {
     super(props)
 
     // Datos.cargarPlatos()
-    this.state = { usuarios: false, usuario: false }
+    this.state = { usuarios: false, usuario: false, proyectos: false}
     Usuario.registrar(this)
+    Proyecto.registrar(this)
   }
 
   componentDidMount() {
     Usuario.observar()
+    Proyecto.observar()
     this.leerUsuario()
   }
 
   componentWillUnmount(){
     Usuario.detener()
+    Proyecto.detener()
     // Usuario.detener(this.state.usuario.id);
   }
 
@@ -75,9 +76,9 @@ export default class ComboSocial extends Component {
 
   render() {
     // return <Examples />
-    const { usuarios, usuario } = this.state
+    const { usuarios, usuario, proyectos } = this.state
 
-    if(!usuarios)  { return <Cargando /> }
+    if(!usuarios && !proyectos)  { return <Cargando /> }
 
     if(!usuario) { return <ElegirUsuario usuarios={usuarios} alElegir={ usuario => this.alIngresar(usuario)} />}
 

@@ -37,6 +37,7 @@ const esColeccion = camino => normalizar(camino).length == 1
 // const esRegistro  = camino => normalizar(camino).length == 2
 // const esValor     = camino => normalizar(camino).length == 3
 
+
 export class Datos {
 
     static cargarCombos(){
@@ -56,6 +57,7 @@ export class Datos {
 
     static cargar(){
       this.cargarCombos()
+      this.cargarProyectos()
       this.cargarUsuarios()
     }
 
@@ -170,6 +172,13 @@ export class Usuario extends Registro {
 export class Combo extends Registro {
   get foto(){return `https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/combos%2F${this.id}.jpg?alt=media`}
   get detalle(){ return `Comprando este combo estás donando $${this.contribución}`}
+}
+
+export class Proyecto extends Registro {
+  actualizarMontoActual(combo){
+    this.monto_actual += combo.contribución
+    this.escribir()
+  }
 }
 
 export class Donacion extends Registro {
