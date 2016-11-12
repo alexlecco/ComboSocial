@@ -120,9 +120,9 @@ const ItemDonacion = ({item: {cliente, combo, donacion}, alAceptar, alDisponer})
             </Col>
             <Col>
               <View style={Item.centrar}>
-                {donacion.estado === Estados.iniciada && <Button onPress={ () => alAceptar(combo) }> Tomar </Button>}
-                {donacion.estado === Estados.tomada && <Button success onPress={ () => alDisponer(combo)}> Cobrar </Button>}
-                {donacion.estado === Estados.cobrada && <Text> La donacion fue cobrada </Text>}
+                {donacion.estado === Estados.iniciada && <Button style={{height: 50, }} onPress={ () => alAceptar(combo) }> Tomar </Button>}
+                {donacion.estado === Estados.tomada && <Button style={{height: 50, }} success onPress={ () => alDisponer(combo)}> Cobrar </Button>}
+                {donacion.estado === Estados.cobrada && <Text style={{textAlign: 'center' }}> La donacion fue cobrada </Text>}
               </View>
             </Col>
           </Grid>

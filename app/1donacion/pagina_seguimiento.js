@@ -28,8 +28,16 @@ const Accion = ({donacion}) => {
     case Estados.cobrada:
         return (
           <View>
-            <Button block style={{backgroundColor: '#3b5998', marginBottom: 5}}> Compartilo en Facebook </Button>
-            <Button block style={{backgroundColor: '#dd4b39', marginTop: 5}} > Compartilo en Google + </Button>
+            <Button block style={{
+                            backgroundColor: '#3b5998',
+                            marginBottom: 5,
+                            height: 50, }}> Compartilo en Facebook
+            </Button>
+            <Button block style={{
+                            backgroundColor: '#dd4b39',
+                            marginTop: 5,
+                            height: 50, }} > Compartilo en Google +
+            </Button>
             <Button block style={Pantalla.accion} onPress={ () => donacion.valorar() }><Icon name='ios-checkmark' /> Volver </Button>
           </View>
         );

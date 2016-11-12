@@ -46,8 +46,23 @@ class PaginaPresentacion extends Component {
       <Contenido>
         <Image source={{uri: 'https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/restaurant.jpg?alt=media'}} style={{flex: 1, alignItems: 'center'}}>
           <Image style={{ resizeMode: 'cover', backgroundColor: '#ffffff99', margin: 20, width: 300 }} source={{uri: 'https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/icono.png?alt=media', width: 250, height: 250}} />
-          <Button success style={{ justifyContent: 'center', alignSelf: 'center', top: 50 }}
+          <Button success style={{
+                            justifyContent: 'center',
+                            alignSelf: 'center',
+                            top: 30,
+                            width: 200,
+                            height: 50,
+                            marginBottom: 5, }}
                   onPress={() => {console.log("conocenos")}}> Conocenos
+          </Button>
+          <Button success style={{
+                            justifyContent: 'center',
+                            alignSelf: 'center',
+                            top: 30,
+                            width: 200,
+                            height: 50,
+                            marginTop: 5, }}
+                  onPress={() => {console.log("conocenos")}}> Mirá los proyecto
           </Button>
         </Image>
         <View style={{height: 50, backgroundColor: 'steelblue', alignItems:'center'}}>
