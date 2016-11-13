@@ -180,6 +180,11 @@ export class Combo extends Registro {
   get detalle(){ return `Comprando este combo estás donando $${this.contribución}`}
 }
 
+export class Bar extends Registro {
+  get foto(){return `https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/bares%2F${this.id}.jpg?alt=media`}
+  get detalle(){ return `Este bar participa de la iniciativa Combo Social`}
+}
+
 export class Proyecto extends Registro {
   get foto(){return `https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/proyectos%2F${this.id}.jpg?alt=media`}
 
@@ -187,10 +192,6 @@ export class Proyecto extends Registro {
     this.monto_actual += combo.contribución
     this.escribir()
   }
-}
-
-export class Bar extends Registro {
-  get foto(){return `https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/bares%2F${this.id}.jpg?alt=media`}
 }
 
 export class Donacion extends Registro {

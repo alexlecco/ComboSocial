@@ -6,7 +6,8 @@ import { Image } from 'react-native';
 import {
   Container, Header, Title,
   Content, Footer, Button,
-  Text, View, Spinner, Icon } from 'native-base';
+  Text, View, Spinner, Icon
+} from 'native-base';
 
 import StarRating from 'react-native-star-rating';
 import { IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator } from 'rn-viewpager';
@@ -23,34 +24,34 @@ const humanizeHora = (segundos) => {
   return `${h > 0 ? h + 'h ' : ''}${m > 0 ? m + 'm ' : ''}${s > 0 ? s + 's' : ''}`
 }
 
-class ComboCompacto extends Component {
+class BarCompacto extends Component {
   render(){
-    const {combo} = this.props;
+    const {bar} = this.props;
     return (
       <View style={{flexDirection:'row'}}>
-        <Image source={{uri: combo.foto}} style={[Pantalla.imagen(4/3, 0.4), {borderRadius: 5,}]}>
-          <Precio precio={combo.precio} compacto={true} />
+        <Image source={{uri: bar.foto}} style={[Pantalla.imagen(4/3, 0.4), {borderRadius: 5,}]}>
+          <Precio precio={bar.precio} compacto={true} />
         </Image>
         <View style={{marginLeft: Pantalla.separacion, flex: 1}}>
-          <Text style={Estilo.combo.descripcion}> {combo.descripcion} </Text>
-          <Text style={Estilo.combo.detalle}> {combo.detalle} </Text>
+          <Text style={Estilo.bar.descripcion}> {bar.descripcion} </Text>
+          <Text style={Estilo.bar.detalle}> {bar.detalle} </Text>
         </View>
       </View>
     )
   }
 }
 
-class ComboNormal extends Component {
+class BarNormal extends Component {
   render(){
-    const { combo } = this.props;
+    const { bar } = this.props;
     return (
       <View>
-        <Image source={{uri: combo.foto}} style={[Pantalla.imagen(4/3), {borderRadius: 5, }]}>
-          <Precio precio={combo.precio} />
+        <Image source={{uri: bar.foto}} style={[Pantalla.imagen(4/3), {borderRadius: 5, }]}>
+          <Precio precio={bar.precio} />
         </Image>
         <View style={{marginTop: Pantalla.separacion}}>
-          <Text style={Estilo.combo.descripcion}> {combo.descripcion} </Text>
-          <Text style={Estilo.combo.detalle}> {combo.detalle} </Text>
+          <Text style={Estilo.bar.descripcion}> {bar.descripcion} </Text>
+          <Text style={Estilo.bar.detalle}> {bar.detalle} </Text>
         </View>
       </View>
     )
@@ -58,10 +59,10 @@ class ComboNormal extends Component {
 }
 
 const Precio = ({ precio, compacto }) =>
-  <View style={Estilo.combo.ubicarPrecio}>
-    <Text style={compacto ? Estilo.combo.precioCompacto : Estilo.combo.precio}>${precio}</Text>
+  <View style={Estilo.bar.ubicarPrecio}>
+    <Text style={compacto ? Estilo.bar.precioCompacto : Estilo.bar.precio}>${precio}</Text>
   </View>
 
-const MostrarCombo = ({combo, compacto}) => compacto ? <ComboCompacto combo={combo} /> : <ComboNormal combo={combo} />
+const MostrarBar = ({bar, compacto}) => compacto ? <BarCompacto bar={bar} /> : <BarNormal bar={bar} />
 
-export { ComboCompacto, ComboNormal, MostrarCombo }
+export { BarCompacto, BarNormal, MostrarBar }
