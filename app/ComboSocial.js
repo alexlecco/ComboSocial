@@ -89,7 +89,7 @@ export default class ComboSocial extends Component {
 }
 
 const ejecutarAccion = (accion) => {
-  if(accion==0){ Datos.cargarCombos() }
+  if(accion==0){ Datos.cargar() }
   if(accion==1){
     Datos.cargarUsuarios();
     AsyncStorage.getItem('@usuario:id')
@@ -98,7 +98,6 @@ const ejecutarAccion = (accion) => {
       // .done()
   }
   if(accion==2){ Datos.borrarDonaciones() }
-  if(accion==3){ Datos.cargarProyectos() }
 }
 
 const ElegirUsuario = (props) => {
@@ -118,7 +117,7 @@ const ElegirUsuario = (props) => {
         <ListarUsuarios titulo="Propietarios" {...props} usuarios={propietarios} />
       </Content>
       <Footer>
-        <Acciones titulos={["+ Combos", "+ Usuarios", "- Donaciones", "+ Proyectos"]} alElegir={(nroAccion) => ejecutarAccion(nroAccion)} />
+        <Acciones titulos={["+ Datos", "+ Usuarios", "- Donaciones"]} alElegir={(nroAccion) => ejecutarAccion(nroAccion)} />
       </Footer>
     </Container>
   )

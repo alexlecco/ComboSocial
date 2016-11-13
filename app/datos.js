@@ -55,10 +55,16 @@ export class Datos {
       raiz.child('usuarios').set(datos.usuarios)
     }
 
+    static cargarBares() {
+      const datos = require('./datos.json')
+      raiz.child('bares').set(datos.bares)
+    }
+
     static cargar(){
       this.cargarCombos()
       this.cargarProyectos()
       this.cargarUsuarios()
+      this.cargarBares()
     }
 
     static borrarDonaciones(){
@@ -175,10 +181,16 @@ export class Combo extends Registro {
 }
 
 export class Proyecto extends Registro {
+  get foto(){return `https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/proyectos%2F${this.id}.jpg?alt=media`}
+
   actualizarMontoActual(combo){
     this.monto_actual += combo.contribución
     this.escribir()
   }
+}
+
+export class Bar extends Registro {
+  get foto(){return `https://firebasestorage.googleapis.com/v0/b/combo-social.appspot.com/o/bares%2F${this.id}.jpg?alt=media`}
 }
 
 export class Donacion extends Registro {

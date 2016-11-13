@@ -66,7 +66,7 @@ class PaginaPresentacion extends Component {
           </Button>
         </Image>
         <View style={{height: 50, backgroundColor: 'steelblue', alignItems:'center'}}>
-          <Text style={{fontSize: 20, color: 'white', top: 10}}> Elegí tu combo y ayudá </Text>
+          <Text style={{fontSize: 20, color: 'white', top: 10}}> Desplazá a la derecha </Text>
         </View>
       </Contenido>
     )

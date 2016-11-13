@@ -72,6 +72,14 @@
     },
   },
 
+  bares: {
+    bar001: {
+      id: "bar001",
+      nombre: "El arbol de Galeano",
+      propietario: "usu004",
+    },
+  },
+
   proyectos: {
     pro001: {
       id: "pro001",
