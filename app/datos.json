@@ -6,6 +6,7 @@
       precio: 140,
       contribución: 4,
       activo: true,
+      bar: "bar001",
     },
     com002: {
       id: "com002",
@@ -13,6 +14,7 @@
       precio: 150,
       contribución: 5,
       activo: true,
+      bar: "bar001",
     },
     com003: {
       id: "com003",
@@ -20,6 +22,7 @@
       precio: 120,
       contribución: 3,
       activo: true,
+      bar: "bar001",
     },
     com004: {
       id: "com004",
@@ -27,6 +30,7 @@
       precio: 290,
       contribución: 10,
       activo: false,
+      bar: "bar001",
     },
     com005: {
       id: "com005",
@@ -34,6 +38,7 @@
       precio: 230,
       contribución: 6,
       activo: false,
+      bar: "bar001",
     },
   },
 
