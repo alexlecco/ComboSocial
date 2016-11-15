@@ -56,6 +56,7 @@ const Mostrar = ({texto, demora, faltante, completo}) => {
   return (
     <View style={{position:'absolute', bottom: 70, left:20, right: 20}}>
       <Text style={{fontSize: 20}}>{ texto }</Text>
+      <Text style={{fontSize: 20, fontWeight: 'bold'}}> Contagiá tu buena acción compartiendola en redes sociales  </Text>
     </View>
   )
 }
@@ -74,7 +75,7 @@ const Estado = ({donacion}) => {
     case Estados.cobrada:
         return (
             <View>
-              <Mostrar texto="Tu donacion fué registrada. Muchas gracias por ayudar. " demora={donacion.tiempoValoracion} faltante={donacion.tiempoFaltante} completo={true}/>
+              <Mostrar texto="Tu donacion fué registrada. Muchas gracias por ayudare. " demora={donacion.tiempoValoracion} faltante={donacion.tiempoFaltante} completo={true}/>
             </View>
         )
 
