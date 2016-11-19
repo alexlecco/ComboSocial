@@ -10,9 +10,10 @@ import {
 } from 'native-base';
 
 import { Pagina, Contenido, Cargando } from './../componentes/pagina';
-import { Usuario, Donacion, Combo, Estados } from './../datos'
+import { Usuario, Donacion, Combo, Estados, Bar } from './../datos'
 import { Estilos, Estilo, Pantalla } from './../styles';
 
+import { PaginaBares } from './pagina_bares';
 import { PaginaConfirmar } from './pagina_confirmar';
 import { PaginaSeguimiento } from './pagina_seguimiento';
 import { PaginaDonacion } from './pagina_donacion';
@@ -29,12 +30,13 @@ const humanizeHora = (segundos) => {
 class Cliente extends Component {
   constructor(props){
     super(props)
-    this.state = { usuario: false, combos: false, donaciones: false}
+    this.state = { usuario: false, combos: false, donaciones: false, bares: false}
 
     // BINDING
     Usuario.registrar(this)
     Donacion.registrar(this)
     Combo.registrar(this)
+    Bar.registrar(this)
     this.timer = null
   }
 
@@ -67,6 +69,7 @@ class Cliente extends Component {
     Usuario.observar(cliente)
     Donacion.observar(donacion => donacion.enDonacion(cliente))
     Combo.observar(combo => combo.activo)
+    Bar.observar()
     this.activarReloj()
   }
 
@@ -75,15 +78,22 @@ class Cliente extends Component {
     usuario && usuario.detener()
     Combo.detener()
     Donacion.detener()
+    Bar.detener()
     this.detenerReloj()
   }
 
   render(){
-    const {usuario, combos, donaciones}  = this.state
+    const {usuario, combos, donaciones, bares}  = this.state
 
-    const hayDatos   = usuario && combos && donaciones
-    const hayCombos  = combos  && combos.length  > 0
+
     const hayDonaciones = combos  && donaciones && donaciones.length > 0
+    const hayCombos     = combos  && combos.length  > 0
+    const hayBares      = bares
+
+    if(hayBares) {
+      var bar = bares[0]
+      return <PaginaBares />
+    }
 
     if(hayDonaciones){
       var donacion = donaciones[0]
