@@ -56,39 +56,45 @@ class Propietario extends Component {
 
       if(!hayDatos) { return <Cargando /> }
 
-      const donacion  = donaciones[0]
-      if(!donacion){ return <Libre {...this.props} />}
+      if(!proyectos){ return <Libre {...this.props} />}
 
-      const plato    = platos.find(plato => plato.id === donacion.plato)
-      const empleado = usuarios.find(usuario => usuario.id === donacion.empleado)
-      const cliente  = usuarios.find(usuario => usuario.id === donacion.cliente)
-
-      return <Control {...this.props} donacion={donacion} plato={plato} empleado={empleado} cliente={cliente} />
+      return <Control {...this.props} proyectos={proyectos} />
     }
   }
 
   const Control = (props) => {
-    const { proyecto, donacion, plato, cliente, empleado, alElegir, alSalir } = props
+    const { proyectos, proyecto, donacion, plato, cliente, empleado, alElegir, alSalir } = props
 
     return (
-      <Pagina titulo={"Control"} alSalir={() => alSalir()}>
+      <Pagina titulo={"Control de proyectos"} alSalir={() => alSalir()}>
         <Contenido>
-          <Image source={{uri: proyecto.foto}} style={Pantalla.imagen(4/3)}>
-            <Precio precio={proyecto.nombre} />
-          </Image>
-          <View style={{marginTop: Pantalla.separacion}}>
-            <Text style={Estilo.plato.descripcion}> {proyecto.nombre} </Text>
-            <Text style={Estilo.plato.detalle}> {proyecto.nombre} </Text>
-          </View>
+
+          <List dataArray={proyectos}
+                renderRow={(proyecto) =>
+                  <ListItem>
+                    <Card>
+                      <CardItem header>
+                        <Text >{proyecto.nombre}</Text>
+                      </CardItem>
+                      <CardItem>
+                        <Thumbnail source={{uri: proyecto.foto}} size={75} />
+                      </CardItem>
+
+                      <CardItem>
+                        <Text> Monto que se busca: {proyecto.monto_meta} </Text>
+                      </CardItem>
+                      <CardItem>
+                        <Text> Monto actual: {proyecto.monto_actual} </Text>
+                      </CardItem>
+
+                    </Card>
+                  </ListItem>
+                }>
+          </List>
         </Contenido>
       </Pagina>
     )
   }
-
-  const Precio = ({precio}) =>
-    <View >
-      <Text style={[Estilo.plato.precio, Estilo.plato.ubicarPrecio]}>${precio}</Text>
-    </View>
 
   const Libre = (props) =>
     <Pagina titulo={"Control"} alSalir={() => props.alSalir()}>
