@@ -55,7 +55,7 @@ export default class ComboSocial extends Component {
   leerUsuario(){
     AsyncStorage.getItem('@usuario:id')
       .then( valor => Usuario.leer(valor) )
-      .catch( error => console.log("ERROR leerUsuario", error) )
+      .catch( error => console.log("ERRORES leerUsuario", error) )
   }
 
   escribirUsuario(id){
